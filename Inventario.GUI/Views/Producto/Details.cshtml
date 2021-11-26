@@ -1,0 +1,74 @@
+﻿@model Inventario.GUI.ModeloBD.tb_producto
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>tb_producto</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.nombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fecha)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fecha)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.serial_producto)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.serial_producto)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tb_categoria.nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tb_categoria.nombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tb_espacio.nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tb_espacio.nombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tb_marca.nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tb_marca.nombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tb_tipo_producto.nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tb_tipo_producto.nombre)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

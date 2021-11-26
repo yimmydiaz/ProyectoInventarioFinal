@@ -1,0 +1,704 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="InventarioBDModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="tb_asociar">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ubicacion" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="id_producto" Type="int" Nullable="false" />
+          <Property Name="id_persona" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tb_categoria">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tb_edificio">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="id_sede" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tb_espacio">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="id_piso" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tb_fotos">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ruta" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="id_producto" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tb_marca">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tb_persona">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="cedula" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="nombre" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="apellido" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="edad" Type="int" Nullable="false" />
+          <Property Name="celular" Type="nvarchar" MaxLength="15" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tb_piso">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="numeroPiso" Type="int" Nullable="false" />
+          <Property Name="id_edificio" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tb_producto">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="fecha" Type="datetime" Nullable="false" />
+          <Property Name="serial_producto" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="id_marca" Type="int" Nullable="false" />
+          <Property Name="id_categoria" Type="int" Nullable="false" />
+          <Property Name="id_tipoProducto" Type="int" Nullable="false" />
+          <Property Name="id_espacio" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tb_sede">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="direccion" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tb_tipo_producto">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__tb_asocia__id_pe__2C3393D0">
+          <End Role="tb_persona" Type="Self.tb_persona" Multiplicity="1" />
+          <End Role="tb_asociar" Type="Self.tb_asociar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_persona">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tb_asociar">
+              <PropertyRef Name="id_persona" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tb_asocia__id_pr__2B3F6F97">
+          <End Role="tb_producto" Type="Self.tb_producto" Multiplicity="1" />
+          <End Role="tb_asociar" Type="Self.tb_asociar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_producto">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tb_asociar">
+              <PropertyRef Name="id_producto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tb_edific__id_se__1A14E395">
+          <End Role="tb_sede" Type="Self.tb_sede" Multiplicity="1" />
+          <End Role="tb_edificio" Type="Self.tb_edificio" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_sede">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tb_edificio">
+              <PropertyRef Name="id_sede" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tb_espaci__id_pi__1FCDBCEB">
+          <End Role="tb_piso" Type="Self.tb_piso" Multiplicity="1" />
+          <End Role="tb_espacio" Type="Self.tb_espacio" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_piso">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tb_espacio">
+              <PropertyRef Name="id_piso" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tb_fotos__id_pro__286302EC">
+          <End Role="tb_producto" Type="Self.tb_producto" Multiplicity="1" />
+          <End Role="tb_fotos" Type="Self.tb_fotos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_producto">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tb_fotos">
+              <PropertyRef Name="id_producto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tb_piso__id_edif__1CF15040">
+          <End Role="tb_edificio" Type="Self.tb_edificio" Multiplicity="1" />
+          <End Role="tb_piso" Type="Self.tb_piso" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_edificio">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tb_piso">
+              <PropertyRef Name="id_edificio" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tb_produc__id_ca__239E4DCF">
+          <End Role="tb_categoria" Type="Self.tb_categoria" Multiplicity="1" />
+          <End Role="tb_producto" Type="Self.tb_producto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_categoria">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tb_producto">
+              <PropertyRef Name="id_categoria" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tb_produc__id_es__25869641">
+          <End Role="tb_espacio" Type="Self.tb_espacio" Multiplicity="1" />
+          <End Role="tb_producto" Type="Self.tb_producto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_espacio">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tb_producto">
+              <PropertyRef Name="id_espacio" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tb_produc__id_ma__22AA2996">
+          <End Role="tb_marca" Type="Self.tb_marca" Multiplicity="1" />
+          <End Role="tb_producto" Type="Self.tb_producto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_marca">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tb_producto">
+              <PropertyRef Name="id_marca" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tb_produc__id_ti__24927208">
+          <End Role="tb_tipo_producto" Type="Self.tb_tipo_producto" Multiplicity="1" />
+          <End Role="tb_producto" Type="Self.tb_producto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_tipo_producto">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tb_producto">
+              <PropertyRef Name="id_tipoProducto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="InventarioBDModelStoreContainer">
+          <EntitySet Name="tb_asociar" EntityType="Self.tb_asociar" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tb_categoria" EntityType="Self.tb_categoria" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tb_edificio" EntityType="Self.tb_edificio" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tb_espacio" EntityType="Self.tb_espacio" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tb_fotos" EntityType="Self.tb_fotos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tb_marca" EntityType="Self.tb_marca" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tb_persona" EntityType="Self.tb_persona" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tb_piso" EntityType="Self.tb_piso" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tb_producto" EntityType="Self.tb_producto" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tb_sede" EntityType="Self.tb_sede" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tb_tipo_producto" EntityType="Self.tb_tipo_producto" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__tb_asocia__id_pe__2C3393D0" Association="Self.FK__tb_asocia__id_pe__2C3393D0">
+            <End Role="tb_persona" EntitySet="tb_persona" />
+            <End Role="tb_asociar" EntitySet="tb_asociar" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tb_asocia__id_pr__2B3F6F97" Association="Self.FK__tb_asocia__id_pr__2B3F6F97">
+            <End Role="tb_producto" EntitySet="tb_producto" />
+            <End Role="tb_asociar" EntitySet="tb_asociar" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tb_edific__id_se__1A14E395" Association="Self.FK__tb_edific__id_se__1A14E395">
+            <End Role="tb_sede" EntitySet="tb_sede" />
+            <End Role="tb_edificio" EntitySet="tb_edificio" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tb_espaci__id_pi__1FCDBCEB" Association="Self.FK__tb_espaci__id_pi__1FCDBCEB">
+            <End Role="tb_piso" EntitySet="tb_piso" />
+            <End Role="tb_espacio" EntitySet="tb_espacio" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tb_fotos__id_pro__286302EC" Association="Self.FK__tb_fotos__id_pro__286302EC">
+            <End Role="tb_producto" EntitySet="tb_producto" />
+            <End Role="tb_fotos" EntitySet="tb_fotos" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tb_piso__id_edif__1CF15040" Association="Self.FK__tb_piso__id_edif__1CF15040">
+            <End Role="tb_edificio" EntitySet="tb_edificio" />
+            <End Role="tb_piso" EntitySet="tb_piso" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tb_produc__id_ca__239E4DCF" Association="Self.FK__tb_produc__id_ca__239E4DCF">
+            <End Role="tb_categoria" EntitySet="tb_categoria" />
+            <End Role="tb_producto" EntitySet="tb_producto" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tb_produc__id_es__25869641" Association="Self.FK__tb_produc__id_es__25869641">
+            <End Role="tb_espacio" EntitySet="tb_espacio" />
+            <End Role="tb_producto" EntitySet="tb_producto" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tb_produc__id_ma__22AA2996" Association="Self.FK__tb_produc__id_ma__22AA2996">
+            <End Role="tb_marca" EntitySet="tb_marca" />
+            <End Role="tb_producto" EntitySet="tb_producto" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tb_produc__id_ti__24927208" Association="Self.FK__tb_produc__id_ti__24927208">
+            <End Role="tb_tipo_producto" EntitySet="tb_tipo_producto" />
+            <End Role="tb_producto" EntitySet="tb_producto" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="InventarioBDModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="tb_asociar">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ubicacion" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="id_producto" Type="Int32" Nullable="false" />
+          <Property Name="id_persona" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="tb_persona" Relationship="Self.FK__tb_asocia__id_pe__2C3393D0" FromRole="tb_asociar" ToRole="tb_persona" />
+          <NavigationProperty Name="tb_producto" Relationship="Self.FK__tb_asocia__id_pr__2B3F6F97" FromRole="tb_asociar" ToRole="tb_producto" />
+        </EntityType>
+        <EntityType Name="tb_categoria">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="tb_producto" Relationship="Self.FK__tb_produc__id_ca__239E4DCF" FromRole="tb_categoria" ToRole="tb_producto" />
+        </EntityType>
+        <EntityType Name="tb_edificio">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="id_sede" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="tb_sede" Relationship="Self.FK__tb_edific__id_se__1A14E395" FromRole="tb_edificio" ToRole="tb_sede" />
+          <NavigationProperty Name="tb_piso" Relationship="Self.FK__tb_piso__id_edif__1CF15040" FromRole="tb_edificio" ToRole="tb_piso" />
+        </EntityType>
+        <EntityType Name="tb_espacio">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="id_piso" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="tb_piso" Relationship="Self.FK__tb_espaci__id_pi__1FCDBCEB" FromRole="tb_espacio" ToRole="tb_piso" />
+          <NavigationProperty Name="tb_producto" Relationship="Self.FK__tb_produc__id_es__25869641" FromRole="tb_espacio" ToRole="tb_producto" />
+        </EntityType>
+        <EntityType Name="tb_fotos">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ruta" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="id_producto" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="tb_producto" Relationship="Self.FK__tb_fotos__id_pro__286302EC" FromRole="tb_fotos" ToRole="tb_producto" />
+        </EntityType>
+        <EntityType Name="tb_marca">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="tb_producto" Relationship="Self.FK__tb_produc__id_ma__22AA2996" FromRole="tb_marca" ToRole="tb_producto" />
+        </EntityType>
+        <EntityType Name="tb_persona">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="cedula" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="apellido" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="edad" Type="Int32" Nullable="false" />
+          <Property Name="celular" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="tb_asociar" Relationship="Self.FK__tb_asocia__id_pe__2C3393D0" FromRole="tb_persona" ToRole="tb_asociar" />
+        </EntityType>
+        <EntityType Name="tb_piso">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="numeroPiso" Type="Int32" Nullable="false" />
+          <Property Name="id_edificio" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="tb_edificio" Relationship="Self.FK__tb_piso__id_edif__1CF15040" FromRole="tb_piso" ToRole="tb_edificio" />
+          <NavigationProperty Name="tb_espacio" Relationship="Self.FK__tb_espaci__id_pi__1FCDBCEB" FromRole="tb_piso" ToRole="tb_espacio" />
+        </EntityType>
+        <EntityType Name="tb_producto">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="fecha" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="serial_producto" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="id_marca" Type="Int32" Nullable="false" />
+          <Property Name="id_categoria" Type="Int32" Nullable="false" />
+          <Property Name="id_tipoProducto" Type="Int32" Nullable="false" />
+          <Property Name="id_espacio" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="tb_asociar" Relationship="Self.FK__tb_asocia__id_pr__2B3F6F97" FromRole="tb_producto" ToRole="tb_asociar" />
+          <NavigationProperty Name="tb_categoria" Relationship="Self.FK__tb_produc__id_ca__239E4DCF" FromRole="tb_producto" ToRole="tb_categoria" />
+          <NavigationProperty Name="tb_espacio" Relationship="Self.FK__tb_produc__id_es__25869641" FromRole="tb_producto" ToRole="tb_espacio" />
+          <NavigationProperty Name="tb_fotos" Relationship="Self.FK__tb_fotos__id_pro__286302EC" FromRole="tb_producto" ToRole="tb_fotos" />
+          <NavigationProperty Name="tb_marca" Relationship="Self.FK__tb_produc__id_ma__22AA2996" FromRole="tb_producto" ToRole="tb_marca" />
+          <NavigationProperty Name="tb_tipo_producto" Relationship="Self.FK__tb_produc__id_ti__24927208" FromRole="tb_producto" ToRole="tb_tipo_producto" />
+        </EntityType>
+        <EntityType Name="tb_sede">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="direccion" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="tb_edificio" Relationship="Self.FK__tb_edific__id_se__1A14E395" FromRole="tb_sede" ToRole="tb_edificio" />
+        </EntityType>
+        <EntityType Name="tb_tipo_producto">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="tb_producto" Relationship="Self.FK__tb_produc__id_ti__24927208" FromRole="tb_tipo_producto" ToRole="tb_producto" />
+        </EntityType>
+        <Association Name="FK__tb_asocia__id_pe__2C3393D0">
+          <End Role="tb_persona" Type="Self.tb_persona" Multiplicity="1" />
+          <End Role="tb_asociar" Type="Self.tb_asociar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_persona">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tb_asociar">
+              <PropertyRef Name="id_persona" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tb_asocia__id_pr__2B3F6F97">
+          <End Role="tb_producto" Type="Self.tb_producto" Multiplicity="1" />
+          <End Role="tb_asociar" Type="Self.tb_asociar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_producto">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tb_asociar">
+              <PropertyRef Name="id_producto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tb_produc__id_ca__239E4DCF">
+          <End Role="tb_categoria" Type="Self.tb_categoria" Multiplicity="1" />
+          <End Role="tb_producto" Type="Self.tb_producto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_categoria">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tb_producto">
+              <PropertyRef Name="id_categoria" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tb_edific__id_se__1A14E395">
+          <End Role="tb_sede" Type="Self.tb_sede" Multiplicity="1" />
+          <End Role="tb_edificio" Type="Self.tb_edificio" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_sede">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tb_edificio">
+              <PropertyRef Name="id_sede" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tb_piso__id_edif__1CF15040">
+          <End Role="tb_edificio" Type="Self.tb_edificio" Multiplicity="1" />
+          <End Role="tb_piso" Type="Self.tb_piso" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_edificio">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tb_piso">
+              <PropertyRef Name="id_edificio" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tb_espaci__id_pi__1FCDBCEB">
+          <End Role="tb_piso" Type="Self.tb_piso" Multiplicity="1" />
+          <End Role="tb_espacio" Type="Self.tb_espacio" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_piso">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tb_espacio">
+              <PropertyRef Name="id_piso" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tb_produc__id_es__25869641">
+          <End Role="tb_espacio" Type="Self.tb_espacio" Multiplicity="1" />
+          <End Role="tb_producto" Type="Self.tb_producto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_espacio">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tb_producto">
+              <PropertyRef Name="id_espacio" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tb_fotos__id_pro__286302EC">
+          <End Role="tb_producto" Type="Self.tb_producto" Multiplicity="1" />
+          <End Role="tb_fotos" Type="Self.tb_fotos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_producto">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tb_fotos">
+              <PropertyRef Name="id_producto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tb_produc__id_ma__22AA2996">
+          <End Role="tb_marca" Type="Self.tb_marca" Multiplicity="1" />
+          <End Role="tb_producto" Type="Self.tb_producto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_marca">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tb_producto">
+              <PropertyRef Name="id_marca" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tb_produc__id_ti__24927208">
+          <End Role="tb_tipo_producto" Type="Self.tb_tipo_producto" Multiplicity="1" />
+          <End Role="tb_producto" Type="Self.tb_producto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_tipo_producto">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tb_producto">
+              <PropertyRef Name="id_tipoProducto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="InventarioBDEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="tb_asociar" EntityType="Self.tb_asociar" />
+          <EntitySet Name="tb_categoria" EntityType="Self.tb_categoria" />
+          <EntitySet Name="tb_edificio" EntityType="Self.tb_edificio" />
+          <EntitySet Name="tb_espacio" EntityType="Self.tb_espacio" />
+          <EntitySet Name="tb_fotos" EntityType="Self.tb_fotos" />
+          <EntitySet Name="tb_marca" EntityType="Self.tb_marca" />
+          <EntitySet Name="tb_persona" EntityType="Self.tb_persona" />
+          <EntitySet Name="tb_piso" EntityType="Self.tb_piso" />
+          <EntitySet Name="tb_producto" EntityType="Self.tb_producto" />
+          <EntitySet Name="tb_sede" EntityType="Self.tb_sede" />
+          <EntitySet Name="tb_tipo_producto" EntityType="Self.tb_tipo_producto" />
+          <AssociationSet Name="FK__tb_asocia__id_pe__2C3393D0" Association="Self.FK__tb_asocia__id_pe__2C3393D0">
+            <End Role="tb_persona" EntitySet="tb_persona" />
+            <End Role="tb_asociar" EntitySet="tb_asociar" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tb_asocia__id_pr__2B3F6F97" Association="Self.FK__tb_asocia__id_pr__2B3F6F97">
+            <End Role="tb_producto" EntitySet="tb_producto" />
+            <End Role="tb_asociar" EntitySet="tb_asociar" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tb_produc__id_ca__239E4DCF" Association="Self.FK__tb_produc__id_ca__239E4DCF">
+            <End Role="tb_categoria" EntitySet="tb_categoria" />
+            <End Role="tb_producto" EntitySet="tb_producto" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tb_edific__id_se__1A14E395" Association="Self.FK__tb_edific__id_se__1A14E395">
+            <End Role="tb_sede" EntitySet="tb_sede" />
+            <End Role="tb_edificio" EntitySet="tb_edificio" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tb_piso__id_edif__1CF15040" Association="Self.FK__tb_piso__id_edif__1CF15040">
+            <End Role="tb_edificio" EntitySet="tb_edificio" />
+            <End Role="tb_piso" EntitySet="tb_piso" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tb_espaci__id_pi__1FCDBCEB" Association="Self.FK__tb_espaci__id_pi__1FCDBCEB">
+            <End Role="tb_piso" EntitySet="tb_piso" />
+            <End Role="tb_espacio" EntitySet="tb_espacio" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tb_produc__id_es__25869641" Association="Self.FK__tb_produc__id_es__25869641">
+            <End Role="tb_espacio" EntitySet="tb_espacio" />
+            <End Role="tb_producto" EntitySet="tb_producto" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tb_fotos__id_pro__286302EC" Association="Self.FK__tb_fotos__id_pro__286302EC">
+            <End Role="tb_producto" EntitySet="tb_producto" />
+            <End Role="tb_fotos" EntitySet="tb_fotos" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tb_produc__id_ma__22AA2996" Association="Self.FK__tb_produc__id_ma__22AA2996">
+            <End Role="tb_marca" EntitySet="tb_marca" />
+            <End Role="tb_producto" EntitySet="tb_producto" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tb_produc__id_ti__24927208" Association="Self.FK__tb_produc__id_ti__24927208">
+            <End Role="tb_tipo_producto" EntitySet="tb_tipo_producto" />
+            <End Role="tb_producto" EntitySet="tb_producto" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="InventarioBDModelStoreContainer" CdmEntityContainer="InventarioBDEntities">
+          <EntitySetMapping Name="tb_asociar">
+            <EntityTypeMapping TypeName="InventarioBDModel.tb_asociar">
+              <MappingFragment StoreEntitySet="tb_asociar">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="ubicacion" ColumnName="ubicacion" />
+                <ScalarProperty Name="id_producto" ColumnName="id_producto" />
+                <ScalarProperty Name="id_persona" ColumnName="id_persona" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tb_categoria">
+            <EntityTypeMapping TypeName="InventarioBDModel.tb_categoria">
+              <MappingFragment StoreEntitySet="tb_categoria">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tb_edificio">
+            <EntityTypeMapping TypeName="InventarioBDModel.tb_edificio">
+              <MappingFragment StoreEntitySet="tb_edificio">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="id_sede" ColumnName="id_sede" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tb_espacio">
+            <EntityTypeMapping TypeName="InventarioBDModel.tb_espacio">
+              <MappingFragment StoreEntitySet="tb_espacio">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="id_piso" ColumnName="id_piso" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tb_fotos">
+            <EntityTypeMapping TypeName="InventarioBDModel.tb_fotos">
+              <MappingFragment StoreEntitySet="tb_fotos">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="ruta" ColumnName="ruta" />
+                <ScalarProperty Name="id_producto" ColumnName="id_producto" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tb_marca">
+            <EntityTypeMapping TypeName="InventarioBDModel.tb_marca">
+              <MappingFragment StoreEntitySet="tb_marca">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tb_persona">
+            <EntityTypeMapping TypeName="InventarioBDModel.tb_persona">
+              <MappingFragment StoreEntitySet="tb_persona">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="cedula" ColumnName="cedula" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="apellido" ColumnName="apellido" />
+                <ScalarProperty Name="edad" ColumnName="edad" />
+                <ScalarProperty Name="celular" ColumnName="celular" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tb_piso">
+            <EntityTypeMapping TypeName="InventarioBDModel.tb_piso">
+              <MappingFragment StoreEntitySet="tb_piso">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="numeroPiso" ColumnName="numeroPiso" />
+                <ScalarProperty Name="id_edificio" ColumnName="id_edificio" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tb_producto">
+            <EntityTypeMapping TypeName="InventarioBDModel.tb_producto">
+              <MappingFragment StoreEntitySet="tb_producto">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="fecha" ColumnName="fecha" />
+                <ScalarProperty Name="serial_producto" ColumnName="serial_producto" />
+                <ScalarProperty Name="id_marca" ColumnName="id_marca" />
+                <ScalarProperty Name="id_categoria" ColumnName="id_categoria" />
+                <ScalarProperty Name="id_tipoProducto" ColumnName="id_tipoProducto" />
+                <ScalarProperty Name="id_espacio" ColumnName="id_espacio" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tb_sede">
+            <EntityTypeMapping TypeName="InventarioBDModel.tb_sede">
+              <MappingFragment StoreEntitySet="tb_sede">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="direccion" ColumnName="direccion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tb_tipo_producto">
+            <EntityTypeMapping TypeName="InventarioBDModel.tb_tipo_producto">
+              <MappingFragment StoreEntitySet="tb_tipo_producto">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

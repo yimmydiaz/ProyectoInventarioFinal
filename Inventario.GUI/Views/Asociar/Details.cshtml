@@ -1,0 +1,42 @@
+﻿@model Inventario.GUI.ModeloBD.tb_asociar
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>tb_asociar</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ubicacion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ubicacion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tb_persona.cedula)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tb_persona.cedula)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tb_producto.nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tb_producto.nombre)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
