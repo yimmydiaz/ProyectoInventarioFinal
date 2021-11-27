@@ -8,32 +8,51 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Inventario.GUI.ModeloBD;
+using LogicaNegocio.Implementacion.Parametros;
+using Inventario.GUI.Helpers;
+using LogicaNegocio.DTO.Parametros;
+using Inventario.GUI.Mapeadores.Parametros;
+using Inventario.GUI.Models.Parametros;
+using PagedList;
 
 namespace Inventario.GUI.Controllers.Parametros
 {
     public class SedeController : Controller
     {
-        private InventarioBDEntities db = new InventarioBDEntities();
+        private ImplSedeLogica logica = new ImplSedeLogica();
 
         // GET: Sede
-        public async Task<ActionResult> Index()
+        public ActionResult Index(int? page, string filtro = "")
         {
-            return View(await db.tb_sede.ToListAsync());
+            int numPagina = page ?? 1;
+            int registroPorPagina = DatosGenerales.RegistroPorPagina;
+            int totalRegistro;
+            IEnumerable<SedeDTO> listaDatos = logica.ListarRegistros(
+                            filtro, numPagina, registroPorPagina, out totalRegistro);
+            MapeadorSedeGUI mapper = new MapeadorSedeGUI();
+            IEnumerable<ModeloSede> listaModelo = mapper.MapearTipo1Tipo2(listaDatos);
+            //var registroPagina = listaModelo.ToPagedList(numPagina, 2);
+            var listaPagina = new StaticPagedList<ModeloSede>
+                (listaModelo, numPagina, registroPorPagina, totalRegistro);
+            return View(listaPagina);
         }
 
         // GET: Sede/Details/5
         public async Task<ActionResult> Details(int? id)
         {
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            tb_sede tb_sede = await db.tb_sede.FindAsync(id);
-            if (tb_sede == null)
+            SedeDTO SedeDTO = logica.BuscarRegistro(id.Value);
+            if (SedeDTO == null)
             {
                 return HttpNotFound();
             }
-            return View(tb_sede);
+            MapeadorSedeGUI mapper = new MapeadorSedeGUI();
+            ModeloSede modelo = mapper.MapearTipo1Tipo2(SedeDTO);
+            return View(modelo);
         }
 
         // GET: Sede/Create
@@ -47,16 +66,17 @@ namespace Inventario.GUI.Controllers.Parametros
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "id,nombre,direccion")] tb_sede tb_sede)
+        public async Task<ActionResult> Create([Bind(Include = "id,nombre,direccion")] ModeloSede modelo)
         {
             if (ModelState.IsValid)
             {
-                db.tb_sede.Add(tb_sede);
-                await db.SaveChangesAsync();
+                MapeadorSedeGUI mapper = new MapeadorSedeGUI();
+                SedeDTO categoriaDTO = mapper.MapearTipo2Tipo1(modelo);
+                logica.GuardarRegistro(categoriaDTO);
                 return RedirectToAction("Index");
             }
 
-            return View(tb_sede);
+            return View(modelo);
         }
 
         // GET: Sede/Edit/5
@@ -66,12 +86,14 @@ namespace Inventario.GUI.Controllers.Parametros
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            tb_sede tb_sede = await db.tb_sede.FindAsync(id);
-            if (tb_sede == null)
+            SedeDTO categoriaDTO = logica.BuscarRegistro(id.Value);
+            if (categoriaDTO == null)
             {
                 return HttpNotFound();
             }
-            return View(tb_sede);
+            MapeadorSedeGUI mapper = new MapeadorSedeGUI();
+            ModeloSede modelo = mapper.MapearTipo1Tipo2(categoriaDTO);
+            return View(modelo);
         }
 
         // POST: Sede/Edit/5
@@ -79,30 +101,34 @@ namespace Inventario.GUI.Controllers.Parametros
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "id,nombre,direccion")] tb_sede tb_sede)
+        public async Task<ActionResult> Edit([Bind(Include = "id,nombre,direccion")] ModeloSede modelo)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(tb_sede).State = EntityState.Modified;
-                await db.SaveChangesAsync();
+                MapeadorSedeGUI mapper = new MapeadorSedeGUI();
+                SedeDTO categoriaDTO = mapper.MapearTipo2Tipo1(modelo);
+                logica.EditarRegistro(categoriaDTO);
                 return RedirectToAction("Index");
             }
-            return View(tb_sede);
+            return View(modelo);
         }
 
         // GET: Sede/Delete/5
         public async Task<ActionResult> Delete(int? id)
         {
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            tb_sede tb_sede = await db.tb_sede.FindAsync(id);
-            if (tb_sede == null)
+            SedeDTO categoriaDTO = logica.BuscarRegistro(id.Value);
+            if (categoriaDTO == null)
             {
                 return HttpNotFound();
             }
-            return View(tb_sede);
+            MapeadorSedeGUI mapper = new MapeadorSedeGUI();
+            ModeloSede modelo = mapper.MapearTipo1Tipo2(categoriaDTO);
+            return View(modelo);
         }
 
         // POST: Sede/Delete/5
@@ -110,19 +136,24 @@ namespace Inventario.GUI.Controllers.Parametros
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            tb_sede tb_sede = await db.tb_sede.FindAsync(id);
-            db.tb_sede.Remove(tb_sede);
-            await db.SaveChangesAsync();
-            return RedirectToAction("Index");
+            bool respuesta = logica.EliminarRegistro(id);
+            if (respuesta)
+            {
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                SedeDTO categoriaDTO = logica.BuscarRegistro(id);
+                if (categoriaDTO == null)
+                {
+                    return HttpNotFound();
+                }
+                MapeadorSedeGUI mapper = new MapeadorSedeGUI();
+                ViewBag.mensaje = Mensajes.mensajeErrorEliminar;
+                ModeloSede modelo = mapper.MapearTipo1Tipo2(categoriaDTO);
+                return View(modelo);
+            }
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
     }
 }

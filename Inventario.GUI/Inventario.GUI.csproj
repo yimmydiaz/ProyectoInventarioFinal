@@ -152,6 +152,8 @@
     <Compile Include="Helpers\Mensajes.cs" />
     <Compile Include="Mapeadores\MapeadorBaseGUI.cs" />
     <Compile Include="Mapeadores\Parametros\MapeadorCategoriaGUI.cs" />
+    <Compile Include="Mapeadores\Parametros\MapeadorEdificioGUI.cs" />
+    <Compile Include="Mapeadores\Parametros\MapeadorSedeGUI.cs" />
     <Compile Include="ModeloBD\ModelInventario.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -201,6 +203,8 @@
       <DependentUpon>ModelInventario.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Parametros\ModeloCategoria.cs" />
+    <Compile Include="Models\Parametros\ModeloEdificio.cs" />
+    <Compile Include="Models\Parametros\ModeloSede.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

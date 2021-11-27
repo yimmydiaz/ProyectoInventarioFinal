@@ -38,7 +38,7 @@ namespace Inventario.GUI.Controllers.Parametros
         }
 
         // GET: Categoria/Details/5
-        public async Task<ActionResult> Details(int? id)
+        public ActionResult Details(int? id)
         {
 
             if (id == null)
@@ -66,7 +66,7 @@ namespace Inventario.GUI.Controllers.Parametros
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "id,nombre")] ModeloCategoria modelo)
+        public ActionResult Create([Bind(Include = "id,nombre")] ModeloCategoria modelo)
         {
 
             if (ModelState.IsValid)
@@ -81,7 +81,7 @@ namespace Inventario.GUI.Controllers.Parametros
         }
 
         // GET: Categoria/Edit/5
-        public async Task<ActionResult> Edit(int? id)
+        public ActionResult Edit(int? id)
         {
             if (id == null)
             {
@@ -102,7 +102,7 @@ namespace Inventario.GUI.Controllers.Parametros
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "id,nombre")] ModeloCategoria modelo)
+        public ActionResult Edit([Bind(Include = "id,nombre")] ModeloCategoria modelo)
         {
             if (ModelState.IsValid)
             {
@@ -115,7 +115,7 @@ namespace Inventario.GUI.Controllers.Parametros
         }
 
         // GET: Categoria/Delete/5
-        public async Task<ActionResult> Delete(int? id)
+        public ActionResult Delete(int? id)
         {
             if (id == null)
             {
@@ -134,7 +134,7 @@ namespace Inventario.GUI.Controllers.Parametros
         // POST: Categoria/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(int id)
         {
             bool respuesta = logica.EliminarRegistro(id);
             if (respuesta)

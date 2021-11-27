@@ -44,9 +44,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DbModel\Parametros\CategoriaDbModel.cs" />
+    <Compile Include="DbModel\Parametros\EdificioDbModel.cs" />
+    <Compile Include="DbModel\Parametros\SedeDbModel.cs" />
     <Compile Include="Implementacion\Parametros\ImplCategoriaDatos.cs" />
+    <Compile Include="Implementacion\Parametros\ImplEdificioDatos.cs" />
+    <Compile Include="Implementacion\Parametros\ImplSedeDatos.cs" />
     <Compile Include="Mapeadores\MapeadorbaseDatos.cs" />
     <Compile Include="Mapeadores\Parametros\MapeadorCategoriaDatos.cs" />
+    <Compile Include="Mapeadores\Parametros\MapeadorEdificioDatos.cs" />
+    <Compile Include="Mapeadores\Parametros\MapeadorSedeDatos.cs" />
     <Compile Include="ModeloDeDatos\ModeloInventario.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
