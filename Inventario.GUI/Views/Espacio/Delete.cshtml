@@ -1,4 +1,4 @@
-﻿@model Inventario.GUI.ModeloBD.tb_espacio
+﻿@model Inventario.GUI.Models.Parametros.ModeloEspacio
 
 @{
     ViewBag.Title = "Delete";
@@ -12,19 +12,19 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.nombre)
+            @Html.DisplayNameFor(model => model.Nombre)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.nombre)
+            @Html.DisplayFor(model => model.Nombre)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.tb_piso.nombre)
+            @Html.DisplayNameFor(model => model.NombrePiso)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.tb_piso.nombre)
+            @Html.DisplayFor(model => model.NombrePiso)
         </dd>
 
     </dl>

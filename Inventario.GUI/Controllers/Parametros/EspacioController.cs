@@ -8,39 +8,62 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Inventario.GUI.ModeloBD;
+using LogicaNegocio.Implementacion.Parametros;
+using Inventario.GUI.Helpers;
+using LogicaNegocio.DTO.Parametros;
+using Inventario.GUI.Models.Parametros;
+using Inventario.GUI.Mapeadores.Parametros;
+using PagedList;
+using LogicaNegocio.DTO;
 
 namespace Inventario.GUI.Controllers.Parametros
 {
     public class EspacioController : Controller
     {
-        private InventarioBDEntities db = new InventarioBDEntities();
+        private ImplEspacioLogica logica = new ImplEspacioLogica();
+        private ImplPisoLogica sede = new ImplPisoLogica();
 
         // GET: Espacio
-        public async Task<ActionResult> Index()
+        public ActionResult Index(int? page, string filtro = "")
         {
-            var tb_espacio = db.tb_espacio.Include(t => t.tb_piso);
-            return View(await tb_espacio.ToListAsync());
+            int numPagina = page ?? 1;
+            int registroPorPagina = DatosGenerales.RegistroPorPagina;
+            int totalRegistro;
+            IEnumerable<EspacioDTO> listaDatos = logica.ListarRegistros(
+                            filtro, numPagina, registroPorPagina, out totalRegistro);
+            MapeadorEspacioGUI mapper = new MapeadorEspacioGUI();
+            IEnumerable<ModeloEspacio> listaModelo = mapper.MapearTipo1Tipo2(listaDatos);
+            //var registroPagina = listaModelo.ToPagedList(numPagina, 2);
+            var listaPagina = new StaticPagedList<ModeloEspacio>
+                (listaModelo, numPagina, registroPorPagina, totalRegistro);
+            return View(listaPagina);
         }
 
         // GET: Espacio/Details/5
-        public async Task<ActionResult> Details(int? id)
+        public ActionResult Details(int? id)
         {
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            tb_espacio tb_espacio = await db.tb_espacio.FindAsync(id);
-            if (tb_espacio == null)
+            EspacioDTO EspacioDTO = logica.BuscarRegistro(id.Value);
+            if (EspacioDTO == null)
             {
                 return HttpNotFound();
             }
-            return View(tb_espacio);
+            MapeadorEspacioGUI mapper = new MapeadorEspacioGUI();
+            ModeloEspacio modelo = mapper.MapearTipo1Tipo2(EspacioDTO);
+            return View(modelo);
         }
 
         // GET: Espacio/Create
         public ActionResult Create()
         {
-            ViewBag.id_piso = new SelectList(db.tb_piso, "id", "nombre");
+            IEnumerable<PisoDTO> listaDatos = sede.ListarPisos();
+            MapeadorPisoGUI mapper = new MapeadorPisoGUI();
+
+            ViewBag.id_piso = new SelectList(mapper.MapearTipo1Tipo2(listaDatos), "id", "nombre");
             return View();
         }
 
@@ -49,33 +72,40 @@ namespace Inventario.GUI.Controllers.Parametros
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "id,nombre,id_piso")] tb_espacio tb_espacio)
+        public ActionResult Create([Bind(Include = "id,nombre,id_piso")] ModeloEspacio modelo)
         {
             if (ModelState.IsValid)
             {
-                db.tb_espacio.Add(tb_espacio);
-                await db.SaveChangesAsync();
+                MapeadorEspacioGUI mapper = new MapeadorEspacioGUI();
+                EspacioDTO edificioDTO = mapper.MapearTipo2Tipo1(modelo);
+                logica.GuardarRegistro(edificioDTO);
                 return RedirectToAction("Index");
             }
-
-            ViewBag.id_piso = new SelectList(db.tb_piso, "id", "nombre", tb_espacio.id_piso);
-            return View(tb_espacio);
+            IEnumerable<PisoDTO> listaDatos = sede.ListarPisos();
+            MapeadorPisoGUI mapper1 = new MapeadorPisoGUI();
+            ViewBag.id_piso = new SelectList(mapper1.MapearTipo1Tipo2(listaDatos), "id", "nombre", modelo.NombrePiso);
+            return View(modelo);
         }
 
         // GET: Espacio/Edit/5
-        public async Task<ActionResult> Edit(int? id)
+        public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            tb_espacio tb_espacio = await db.tb_espacio.FindAsync(id);
-            if (tb_espacio == null)
+            EspacioDTO edificioDTO = logica.BuscarRegistro(id.Value);
+            if (edificioDTO == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.id_piso = new SelectList(db.tb_piso, "id", "nombre", tb_espacio.id_piso);
-            return View(tb_espacio);
+            MapeadorEspacioGUI mapper = new MapeadorEspacioGUI();
+            ModeloEspacio modelo = mapper.MapearTipo1Tipo2(edificioDTO);
+
+            IEnumerable<PisoDTO> listaDatos = sede.ListarPisos();
+            MapeadorPisoGUI mapper1 = new MapeadorPisoGUI();
+            ViewBag.id_piso = new SelectList(mapper1.MapearTipo1Tipo2(listaDatos), "id", "nombre", edificioDTO.NombrePiso);
+            return View(modelo);
         }
 
         // POST: Espacio/Edit/5
@@ -83,51 +113,61 @@ namespace Inventario.GUI.Controllers.Parametros
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "id,nombre,id_piso")] tb_espacio tb_espacio)
+        public ActionResult Edit([Bind(Include = "id,nombre,id_piso")] ModeloEspacio modelo)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(tb_espacio).State = EntityState.Modified;
-                await db.SaveChangesAsync();
+                MapeadorEspacioGUI mapper = new MapeadorEspacioGUI();
+                EspacioDTO edificioDTO = mapper.MapearTipo2Tipo1(modelo);
+                logica.EditarRegistro(edificioDTO);
                 return RedirectToAction("Index");
             }
-            ViewBag.id_piso = new SelectList(db.tb_piso, "id", "nombre", tb_espacio.id_piso);
-            return View(tb_espacio);
+            IEnumerable<PisoDTO> listaDatos = sede.ListarPisos();
+            MapeadorPisoGUI mapper1 = new MapeadorPisoGUI();
+            ViewBag.id_piso = new SelectList(mapper1.MapearTipo1Tipo2(listaDatos), "id", "nombre", modelo.Id_Piso);
+            return View(modelo);
         }
 
         // GET: Espacio/Delete/5
-        public async Task<ActionResult> Delete(int? id)
+        public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            tb_espacio tb_espacio = await db.tb_espacio.FindAsync(id);
-            if (tb_espacio == null)
+            EspacioDTO edificioDTO = logica.BuscarRegistro(id.Value);
+            if (edificioDTO == null)
             {
                 return HttpNotFound();
             }
-            return View(tb_espacio);
+            MapeadorEspacioGUI mapper = new MapeadorEspacioGUI();
+            ModeloEspacio modelo = mapper.MapearTipo1Tipo2(edificioDTO);
+            return View(modelo);
         }
 
         // POST: Espacio/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(int id)
         {
-            tb_espacio tb_espacio = await db.tb_espacio.FindAsync(id);
-            db.tb_espacio.Remove(tb_espacio);
-            await db.SaveChangesAsync();
-            return RedirectToAction("Index");
+            bool respuesta = logica.EliminarRegistro(id);
+            if (respuesta)
+            {
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                EspacioDTO edificioDTO = logica.BuscarRegistro(id);
+                if (edificioDTO == null)
+                {
+                    return HttpNotFound();
+                }
+                MapeadorEspacioGUI mapper = new MapeadorEspacioGUI();
+                ViewBag.mensaje = Mensajes.mensajeErrorEliminar;
+                ModeloEspacio modelo = mapper.MapearTipo1Tipo2(edificioDTO);
+                return View(modelo);
+            }
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
     }
 }
