@@ -45,6 +45,7 @@
     <Compile Include="DTO\Parametros\CategoriaDTO.cs" />
     <Compile Include="DTO\Parametros\EdificioDTO.cs" />
     <Compile Include="DTO\Parametros\EspacioDTO.cs" />
+    <Compile Include="DTO\Parametros\MarcaDTO.cs" />
     <Compile Include="DTO\Parametros\SedeDTO.cs" />
     <Compile Include="DTO\Parametros\PisoDTO.cs" />
     <Compile Include="DTO\Producto\FotoProductoDTO.cs" />
@@ -53,6 +54,7 @@
     <Compile Include="Implementacion\Parametros\ImplCategoriaLogica.cs" />
     <Compile Include="Implementacion\Parametros\ImplEdificioLogica.cs" />
     <Compile Include="Implementacion\Parametros\ImplEspacioLogica.cs" />
+    <Compile Include="Implementacion\Parametros\ImplMarcaLogica.cs" />
     <Compile Include="Implementacion\Parametros\ImplPisoLogica.cs" />
     <Compile Include="Implementacion\Parametros\ImplSedeLogica.cs" />
     <Compile Include="Implementacion\Producto\ImplProductoLogica.cs" />
@@ -61,6 +63,7 @@
     <Compile Include="Mapeadores\Parametros\MapeadorCategoriaLogica.cs" />
     <Compile Include="Mapeadores\Parametros\MapeadorEdificioLogica.cs" />
     <Compile Include="Mapeadores\Parametros\MapeadorEspacioLogica.cs" />
+    <Compile Include="Mapeadores\Parametros\MapeadorMarcaLogica.cs" />
     <Compile Include="Mapeadores\Parametros\MapeadorPisoLogica.cs" />
     <Compile Include="Mapeadores\Parametros\MapeadorSedeLogica.cs" />
     <Compile Include="Mapeadores\Producto\MapeadorFotoProductoLogica.cs" />

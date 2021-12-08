@@ -8,32 +8,51 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Inventario.GUI.ModeloBD;
+using LogicaNegocio.Implementacion.Parametros;
+using Inventario.GUI.Helpers;
+using LogicaNegocio.DTO.Parametros;
+using Inventario.GUI.Mapeadores.Parametros;
+using Inventario.GUI.Models.Parametros;
+using PagedList;
 
 namespace Inventario.GUI.Controllers.Parametros
 {
     public class MarcaController : Controller
     {
-        private InventarioBDEntities db = new InventarioBDEntities();
+        private ImplMarcaLogica logica = new ImplMarcaLogica();
 
         // GET: Marca
-        public async Task<ActionResult> Index()
+        public ActionResult Index(int? page, string filtro = "")
         {
-            return View(await db.tb_marca.ToListAsync());
+            int numPagina = page ?? 1;
+            int registroPorPagina = DatosGenerales.RegistroPorPagina;
+            int totalRegistro;
+            IEnumerable<MarcaDTO> listaDatos = logica.ListarRegistros(
+                            filtro, numPagina, registroPorPagina, out totalRegistro);
+            MapeadorMarcaGUI mapper = new MapeadorMarcaGUI();
+            IEnumerable<ModeloMarca> listaModelo = mapper.MapearTipo1Tipo2(listaDatos);
+            //var registroPagina = listaModelo.ToPagedList(numPagina, 2);
+            var listaPagina = new StaticPagedList<ModeloMarca>
+                (listaModelo, numPagina, registroPorPagina, totalRegistro);
+            return View(listaPagina);
         }
 
         // GET: Marca/Details/5
-        public async Task<ActionResult> Details(int? id)
+        public ActionResult Details(int? id)
         {
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            tb_marca tb_marca = await db.tb_marca.FindAsync(id);
-            if (tb_marca == null)
+            MarcaDTO MarcaDTO = logica.BuscarRegistro(id.Value);
+            if (MarcaDTO == null)
             {
                 return HttpNotFound();
             }
-            return View(tb_marca);
+            MapeadorMarcaGUI mapper = new MapeadorMarcaGUI();
+            ModeloMarca modelo = mapper.MapearTipo1Tipo2(MarcaDTO);
+            return View(modelo);
         }
 
         // GET: Marca/Create
@@ -47,31 +66,35 @@ namespace Inventario.GUI.Controllers.Parametros
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "id,nombre")] tb_marca tb_marca)
+        public ActionResult Create([Bind(Include = "id,nombre")] ModeloMarca modelo)
         {
+
             if (ModelState.IsValid)
             {
-                db.tb_marca.Add(tb_marca);
-                await db.SaveChangesAsync();
+                MapeadorMarcaGUI mapper = new MapeadorMarcaGUI();
+                MarcaDTO MarcaDTO = mapper.MapearTipo2Tipo1(modelo);
+                logica.GuardarRegistro(MarcaDTO);
                 return RedirectToAction("Index");
             }
 
-            return View(tb_marca);
+            return View(modelo);
         }
 
         // GET: Marca/Edit/5
-        public async Task<ActionResult> Edit(int? id)
+        public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            tb_marca tb_marca = await db.tb_marca.FindAsync(id);
-            if (tb_marca == null)
+            MarcaDTO MarcaDTO = logica.BuscarRegistro(id.Value);
+            if (MarcaDTO == null)
             {
                 return HttpNotFound();
             }
-            return View(tb_marca);
+            MapeadorMarcaGUI mapper = new MapeadorMarcaGUI();
+            ModeloMarca modelo = mapper.MapearTipo1Tipo2(MarcaDTO);
+            return View(modelo);
         }
 
         // POST: Marca/Edit/5
@@ -79,50 +102,59 @@ namespace Inventario.GUI.Controllers.Parametros
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "id,nombre")] tb_marca tb_marca)
+        public ActionResult Edit([Bind(Include = "id,nombre")] ModeloMarca modelo)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(tb_marca).State = EntityState.Modified;
-                await db.SaveChangesAsync();
+                MapeadorMarcaGUI mapper = new MapeadorMarcaGUI();
+                MarcaDTO MarcaDTO = mapper.MapearTipo2Tipo1(modelo);
+                logica.EditarRegistro(MarcaDTO);
                 return RedirectToAction("Index");
             }
-            return View(tb_marca);
+            return View(modelo);
         }
 
         // GET: Marca/Delete/5
-        public async Task<ActionResult> Delete(int? id)
+        public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            tb_marca tb_marca = await db.tb_marca.FindAsync(id);
-            if (tb_marca == null)
+            MarcaDTO MarcaDTO = logica.BuscarRegistro(id.Value);
+            if (MarcaDTO == null)
             {
                 return HttpNotFound();
             }
-            return View(tb_marca);
+            MapeadorMarcaGUI mapper = new MapeadorMarcaGUI();
+            ModeloMarca modelo = mapper.MapearTipo1Tipo2(MarcaDTO);
+            return View(modelo);
         }
 
         // POST: Marca/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(int id)
         {
-            tb_marca tb_marca = await db.tb_marca.FindAsync(id);
-            db.tb_marca.Remove(tb_marca);
-            await db.SaveChangesAsync();
-            return RedirectToAction("Index");
+            bool respuesta = logica.EliminarRegistro(id);
+            if (respuesta)
+            {
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                MarcaDTO MarcaDTO = logica.BuscarRegistro(id);
+                if (MarcaDTO == null)
+                {
+                    return HttpNotFound();
+                }
+                MapeadorMarcaGUI mapper = new MapeadorMarcaGUI();
+                ViewBag.mensaje = Mensajes.mensajeErrorEliminar;
+                ModeloMarca modelo = mapper.MapearTipo1Tipo2(MarcaDTO);
+                return View(modelo);
+            }
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
+
     }
 }
