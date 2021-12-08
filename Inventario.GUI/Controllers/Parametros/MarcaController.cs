@@ -19,25 +19,25 @@ namespace Inventario.GUI.Controllers.Parametros
 {
     public class MarcaController : Controller
     {
-        private ImplTipoProductoLogica logica = new ImplTipoProductoLogica();
+        private ImplMarcaLogica logica = new ImplMarcaLogica();
 
-        // GET: TipoProducto
+        // GET: Marca
         public ActionResult Index(int? page, string filtro = "")
         {
             int numPagina = page ?? 1;
             int registroPorPagina = DatosGenerales.RegistroPorPagina;
             int totalRegistro;
-            IEnumerable<TipoProductoDTO> listaDatos = logica.ListarRegistros(
+            IEnumerable<MarcaDTO> listaDatos = logica.ListarRegistros(
                             filtro, numPagina, registroPorPagina, out totalRegistro);
-            MapeadorTipoProductoGUI mapper = new MapeadorTipoProductoGUI();
-            IEnumerable<ModeloTipoProducto> listaModelo = mapper.MapearTipo1Tipo2(listaDatos);
+            MapeadorMarcaGUI mapper = new MapeadorMarcaGUI();
+            IEnumerable<ModeloMarca> listaModelo = mapper.MapearTipo1Tipo2(listaDatos);
             //var registroPagina = listaModelo.ToPagedList(numPagina, 2);
-            var listaPagina = new StaticPagedList<ModeloTipoProducto>
+            var listaPagina = new StaticPagedList<ModeloMarca>
                 (listaModelo, numPagina, registroPorPagina, totalRegistro);
             return View(listaPagina);
         }
 
-        // GET: TipoProducto/Details/5
+        // GET: Marca/Details/5
         public ActionResult Details(int? id)
         {
 
@@ -45,13 +45,13 @@ namespace Inventario.GUI.Controllers.Parametros
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            TipoProductoDTO TipoProductoDTO = logica.BuscarRegistro(id.Value);
-            if (TipoProductoDTO == null)
+            MarcaDTO MarcaDTO = logica.BuscarRegistro(id.Value);
+            if (MarcaDTO == null)
             {
                 return HttpNotFound();
             }
-            MapeadorTipoProductoGUI mapper = new MapeadorTipoProductoGUI();
-            ModeloTipoProducto modelo = mapper.MapearTipo1Tipo2(TipoProductoDTO);
+            MapeadorMarcaGUI mapper = new MapeadorMarcaGUI();
+            ModeloMarca modelo = mapper.MapearTipo1Tipo2(MarcaDTO);
             return View(modelo);
         }
 
@@ -66,34 +66,34 @@ namespace Inventario.GUI.Controllers.Parametros
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "id,nombre")] ModeloTipoProducto modelo)
+        public ActionResult Create([Bind(Include = "id,nombre")] ModeloMarca modelo)
         {
 
             if (ModelState.IsValid)
             {
-                MapeadorTipoProductoGUI mapper = new MapeadorTipoProductoGUI();
-                TipoProductoDTO categoriaDTO = mapper.MapearTipo2Tipo1(modelo);
-                logica.GuardarRegistro(categoriaDTO);
+                MapeadorMarcaGUI mapper = new MapeadorMarcaGUI();
+                MarcaDTO MarcaDTO = mapper.MapearTipo2Tipo1(modelo);
+                logica.GuardarRegistro(MarcaDTO);
                 return RedirectToAction("Index");
             }
 
             return View(modelo);
         }
 
-        // GET: TipoProducto/Edit/5
+        // GET: Marca/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            TipoProductoDTO categoriaDTO = logica.BuscarRegistro(id.Value);
-            if (categoriaDTO == null)
+            MarcaDTO MarcaDTO = logica.BuscarRegistro(id.Value);
+            if (MarcaDTO == null)
             {
                 return HttpNotFound();
             }
-            MapeadorTipoProductoGUI mapper = new MapeadorTipoProductoGUI();
-            ModeloTipoProducto modelo = mapper.MapearTipo1Tipo2(categoriaDTO);
+            MapeadorMarcaGUI mapper = new MapeadorMarcaGUI();
+            ModeloMarca modelo = mapper.MapearTipo1Tipo2(MarcaDTO);
             return View(modelo);
         }
 
@@ -102,32 +102,32 @@ namespace Inventario.GUI.Controllers.Parametros
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "id,nombre")] ModeloTipoProducto modelo)
+        public ActionResult Edit([Bind(Include = "id,nombre")] ModeloMarca modelo)
         {
             if (ModelState.IsValid)
             {
-                MapeadorTipoProductoGUI mapper = new MapeadorTipoProductoGUI();
-                TipoProductoDTO categoriaDTO = mapper.MapearTipo2Tipo1(modelo);
-                logica.EditarRegistro(categoriaDTO);
+                MapeadorMarcaGUI mapper = new MapeadorMarcaGUI();
+                MarcaDTO MarcaDTO = mapper.MapearTipo2Tipo1(modelo);
+                logica.EditarRegistro(MarcaDTO);
                 return RedirectToAction("Index");
             }
             return View(modelo);
         }
 
-        // GET: TipoProducto/Delete/5
+        // GET: Marca/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            TipoProductoDTO categoriaDTO = logica.BuscarRegistro(id.Value);
-            if (categoriaDTO == null)
+            MarcaDTO MarcaDTO = logica.BuscarRegistro(id.Value);
+            if (MarcaDTO == null)
             {
                 return HttpNotFound();
             }
-            MapeadorTipoProductoGUI mapper = new MapeadorTipoProductoGUI();
-            ModeloTipoProducto modelo = mapper.MapearTipo1Tipo2(categoriaDTO);
+            MapeadorMarcaGUI mapper = new MapeadorMarcaGUI();
+            ModeloMarca modelo = mapper.MapearTipo1Tipo2(MarcaDTO);
             return View(modelo);
         }
 
@@ -143,17 +143,18 @@ namespace Inventario.GUI.Controllers.Parametros
             }
             else
             {
-                TipoProductoDTO categoriaDTO = logica.BuscarRegistro(id);
-                if (categoriaDTO == null)
+                MarcaDTO MarcaDTO = logica.BuscarRegistro(id);
+                if (MarcaDTO == null)
                 {
                     return HttpNotFound();
                 }
-                MapeadorTipoProductoGUI mapper = new MapeadorTipoProductoGUI();
+                MapeadorMarcaGUI mapper = new MapeadorMarcaGUI();
                 ViewBag.mensaje = Mensajes.mensajeErrorEliminar;
-                ModeloTipoProducto modelo = mapper.MapearTipo1Tipo2(categoriaDTO);
+                ModeloMarca modelo = mapper.MapearTipo1Tipo2(MarcaDTO);
                 return View(modelo);
             }
         }
+
 
     }
 }

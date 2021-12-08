@@ -1,27 +1,32 @@
-﻿@model Inventario.GUI.ModeloBD.tb_marca
+﻿@model Inventario.GUI.Models.Parametros.ModeloMarca
 
 @{
     ViewBag.Title = "Delete";
 }
 
-<h2>Delete</h2>
 
-<h3>Are you sure you want to delete this?</h3>
 <div>
-    <h4>tb_marca</h4>
+    <h4>Eliminar Marca</h4>
     <hr />
+
+    <hr />
+    @if (ViewBag.mensaje != null)
+    {
+        <strong style="color:red">@ViewBag.mensaje</strong>
+    }
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.nombre)
+            @Html.DisplayNameFor(model => model.Nombre)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.nombre)
+            @Html.DisplayFor(model => model.Nombre)
         </dd>
 
     </dl>
 
-    @using (Html.BeginForm()) {
+    @using (Html.BeginForm())
+    {
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
