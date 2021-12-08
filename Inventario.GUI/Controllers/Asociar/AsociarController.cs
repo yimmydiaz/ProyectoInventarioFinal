@@ -8,40 +8,64 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Inventario.GUI.ModeloBD;
+using LogicaNegocio.Implementacion.Asociar;
+using Inventario.GUI.Helpers;
+using LogicaNegocio.DTO.Asociar;
+using Inventario.GUI.Mapeadores.Asociar;
+using Inventario.GUI.Models.Asociar;
+using PagedList;
+using LogicaNegocio.Implementacion.Producto;
+using LogicaNegocio.DTO.Producto;
+using Inventario.GUI.Mapeadores.Producto;
 
 namespace Inventario.GUI.Controllers.Asociar
 {
     public class AsociarController : Controller
     {
-        private InventarioBDEntities db = new InventarioBDEntities();
+        private ImplAsociarLogica logica = new ImplAsociarLogica();
+        private ImplProductoLogica implProducto = new ImplProductoLogica();
 
         // GET: Asociar
-        public async Task<ActionResult> Index()
+        public ActionResult Index(int? page, string filtro = "")
         {
-            var tb_asociar = db.tb_asociar.Include(t => t.tb_persona).Include(t => t.tb_producto);
-            return View(await tb_asociar.ToListAsync());
+            int numPagina = page ?? 1;
+            int registroPorPagina = DatosGenerales.RegistroPorPagina;
+            int totalRegistro;
+            IEnumerable<AsociarDTO> listaDatos = logica.ListarRegistros(
+                            filtro, numPagina, registroPorPagina, out totalRegistro);
+            MapeadorAsociarGUI mapper = new MapeadorAsociarGUI();
+            IEnumerable<ModeloAsociar> listaModelo = mapper.MapearTipo1Tipo2(listaDatos);
+            //var registroPagina = listaModelo.ToPagedList(numPagina, 2);
+            var listaPagina = new StaticPagedList<ModeloAsociar>
+                (listaModelo, numPagina, registroPorPagina, totalRegistro);
+            return View(listaPagina);
         }
-
         // GET: Asociar/Details/5
-        public async Task<ActionResult> Details(int? id)
+        public ActionResult Details(int? id)
         {
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            tb_asociar tb_asociar = await db.tb_asociar.FindAsync(id);
-            if (tb_asociar == null)
+            AsociarDTO AsociarDTO = logica.BuscarRegistro(id.Value);
+            if (AsociarDTO == null)
             {
                 return HttpNotFound();
             }
-            return View(tb_asociar);
+            MapeadorAsociarGUI mapper = new MapeadorAsociarGUI();
+            ModeloAsociar modelo = mapper.MapearTipo1Tipo2(AsociarDTO);
+            return View(modelo);
         }
 
         // GET: Asociar/Create
         public ActionResult Create()
         {
-            ViewBag.id_persona = new SelectList(db.tb_persona, "id", "cedula");
-            ViewBag.id_producto = new SelectList(db.tb_producto, "id", "nombre");
+            IEnumerable<ProductoDTO> listaDatos = implProducto.ListarProductos();
+            MapeadorProductoGUI mapper = new MapeadorProductoGUI();
+
+           // ViewBag.id_persona = new SelectList(db.tb_persona, "id", "cedula");
+           // ViewBag.id_producto = new SelectList(mapper.MapearTipo1Tipo2(listaDatos), "id", "nombre");
             return View();
         }
 
@@ -50,18 +74,21 @@ namespace Inventario.GUI.Controllers.Asociar
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "id,ubicacion,id_producto,id_persona")] tb_asociar tb_asociar)
+        public ActionResult Create([Bind(Include = "id,ubicacion,id_producto,id_persona")] ModeloAsociar modelo)
         {
             if (ModelState.IsValid)
             {
-                db.tb_asociar.Add(tb_asociar);
-                await db.SaveChangesAsync();
+                MapeadorAsociarGUI mapper = new MapeadorAsociarGUI();
+                AsociarDTO asociarDTO = mapper.MapearTipo2Tipo1(modelo);
+                logica.GuardarRegistro(asociarDTO);
                 return RedirectToAction("Index");
             }
+            IEnumerable<ProductoDTO> listaDatos = implProducto.ListarProductos();
+            MapeadorProductoGUI mapper1 = new MapeadorProductoGUI();
 
-            ViewBag.id_persona = new SelectList(db.tb_persona, "id", "cedula", tb_asociar.id_persona);
-            ViewBag.id_producto = new SelectList(db.tb_producto, "id", "nombre", tb_asociar.id_producto);
-            return View(tb_asociar);
+           // ViewBag.id_persona = new SelectList(db.tb_persona, "id", "cedula", tb_asociar.id_persona);
+            ViewBag.id_producto = new SelectList(mapper1.MapearTipo1Tipo2(listaDatos), "id", "nombre", modelo.NombreProducto);
+            return View(modelo);
         }
 
         // GET: Asociar/Edit/5
@@ -71,14 +98,20 @@ namespace Inventario.GUI.Controllers.Asociar
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            tb_asociar tb_asociar = await db.tb_asociar.FindAsync(id);
-            if (tb_asociar == null)
+            AsociarDTO asociarDTO = logica.BuscarRegistro(id.Value);
+            if (asociarDTO == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.id_persona = new SelectList(db.tb_persona, "id", "cedula", tb_asociar.id_persona);
-            ViewBag.id_producto = new SelectList(db.tb_producto, "id", "nombre", tb_asociar.id_producto);
-            return View(tb_asociar);
+            MapeadorAsociarGUI mapper = new MapeadorAsociarGUI();
+            ModeloAsociar modelo = mapper.MapearTipo1Tipo2(asociarDTO);
+
+            IEnumerable<ProductoDTO> listaDatos = implProducto.ListarProductos();
+            MapeadorProductoGUI mapper1 = new MapeadorProductoGUI();
+
+            //ViewBag.id_persona = new SelectList(db.tb_persona, "id", "cedula", tb_asociar.id_persona);
+            ViewBag.id_producto = new SelectList(mapper1.MapearTipo1Tipo2(listaDatos), "id", "nombre", asociarDTO.NombreProducto);
+            return View(modelo);
         }
 
         // POST: Asociar/Edit/5
@@ -86,52 +119,64 @@ namespace Inventario.GUI.Controllers.Asociar
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "id,ubicacion,id_producto,id_persona")] tb_asociar tb_asociar)
+        public ActionResult Edit([Bind(Include = "id,ubicacion,id_producto,id_persona")] ModeloAsociar modelo)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(tb_asociar).State = EntityState.Modified;
-                await db.SaveChangesAsync();
+                MapeadorAsociarGUI mapper = new MapeadorAsociarGUI();
+                AsociarDTO edificioDTO = mapper.MapearTipo2Tipo1(modelo);
+                logica.EditarRegistro(edificioDTO);
                 return RedirectToAction("Index");
             }
-            ViewBag.id_persona = new SelectList(db.tb_persona, "id", "cedula", tb_asociar.id_persona);
-            ViewBag.id_producto = new SelectList(db.tb_producto, "id", "nombre", tb_asociar.id_producto);
-            return View(tb_asociar);
+
+            IEnumerable<ProductoDTO> listaDatos = implProducto.ListarProductos();
+            MapeadorProductoGUI mapper1 = new MapeadorProductoGUI();
+
+           // ViewBag.id_persona = new SelectList(db.tb_persona, "id", "cedula", tb_asociar.id_persona);
+            ViewBag.id_producto = new SelectList(mapper1.MapearTipo1Tipo2(listaDatos), "id", "nombre", modelo.NombreProducto);
+            return View(modelo);
         }
 
         // GET: Asociar/Delete/5
-        public async Task<ActionResult> Delete(int? id)
+        public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            tb_asociar tb_asociar = await db.tb_asociar.FindAsync(id);
-            if (tb_asociar == null)
+            AsociarDTO asociarDTO = logica.BuscarRegistro(id.Value);
+            if (asociarDTO == null)
             {
                 return HttpNotFound();
             }
-            return View(tb_asociar);
+            MapeadorAsociarGUI mapper = new MapeadorAsociarGUI();
+            ModeloAsociar modelo = mapper.MapearTipo1Tipo2(asociarDTO);
+            return View(modelo);
         }
+
 
         // POST: Asociar/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            tb_asociar tb_asociar = await db.tb_asociar.FindAsync(id);
-            db.tb_asociar.Remove(tb_asociar);
-            await db.SaveChangesAsync();
-            return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
+            bool respuesta = logica.EliminarRegistro(id);
+            if (respuesta)
             {
-                db.Dispose();
+                return RedirectToAction("Index");
             }
-            base.Dispose(disposing);
+            else
+            {
+                AsociarDTO asociarDTO = logica.BuscarRegistro(id);
+                if (asociarDTO == null)
+                {
+                    return HttpNotFound();
+                }
+                MapeadorAsociarGUI mapper = new MapeadorAsociarGUI();
+                ViewBag.mensaje = Mensajes.mensajeErrorEliminar;
+                ModeloAsociar modelo = mapper.MapearTipo1Tipo2(asociarDTO);
+                return View(modelo);
+            }
         }
     }
 }

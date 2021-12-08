@@ -11,13 +11,13 @@ namespace Inventario.GUI.Helpers
         public static int RegistroPorPagina =
            Int32.Parse(ConfigurationManager.AppSettings["registroPorPagina"].ToString());
 
-        public static String RutaArchivosVehiculos =
-          ConfigurationManager.AppSettings["rutaArchivosVehiculo"].ToString();
+        public static String RutaArchivosProductos =
+          ConfigurationManager.AppSettings["rutaArchivosProducto"].ToString();
 
-        public static String RutaMostrarArchivosVehiculos =
-          ConfigurationManager.AppSettings["rutaMostrarArchivosVehiculo"].ToString();
+        public static String RutaMostrarArchivosProductos =
+          ConfigurationManager.AppSettings["rutaMostrarArchivosProducto"].ToString();
 
-        public static String CarpetaFotosVehiculosEliminadas =
-        ConfigurationManager.AppSettings["carpetaFotosVehiculoEliminadas"].ToString();
+        public static String CarpetaFotosProductosEliminadas =
+        ConfigurationManager.AppSettings["carpetaFotosProductoEliminadas"].ToString();
     }
 }

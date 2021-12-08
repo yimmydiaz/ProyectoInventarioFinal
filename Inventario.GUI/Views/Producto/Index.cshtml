@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Inventario.GUI.ModeloBD.tb_producto>
+﻿@model IEnumerable<Inventario.GUI.Models.Producto.ModeloProducto>
 
 @{
     ViewBag.Title = "Index";
@@ -9,61 +9,66 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
+<input type="text" name="txtFiltro" id="txtFiltro" />
+<button type="submit" class="btn btn-info "> Filtrar</button>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.nombre)
+            @Html.DisplayNameFor(model => model.Nombre)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.fecha)
+            @Html.DisplayNameFor(model => model.Fecha)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.serial_producto)
+            @Html.DisplayNameFor(model => model.SerialProducto)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.tb_categoria.nombre)
+            @Html.DisplayNameFor(model => model.NombreCategoria)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.tb_espacio.nombre)
+            @Html.DisplayNameFor(model => model.NombreEspacio)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.tb_marca.nombre)
+            @Html.DisplayNameFor(model => model.NombreMarca)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.tb_tipo_producto.nombre)
+            @Html.DisplayNameFor(model => model.NombreTipoProducto)
         </th>
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.nombre)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.fecha)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.serial_producto)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.tb_categoria.nombre)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.tb_espacio.nombre)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.tb_marca.nombre)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.tb_tipo_producto.nombre)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.id })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fecha)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SerialProducto)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NombreCategoria)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NombreEspacio)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NombreMarca)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NombreTipoProducto)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id }) |
+                @Html.ActionLink("Fotografias", "UploadFile", new { id = item.Id })
+            </td>
+        </tr>
+    }
 
 </table>
+@Html.Partial("_Footer_pageList")

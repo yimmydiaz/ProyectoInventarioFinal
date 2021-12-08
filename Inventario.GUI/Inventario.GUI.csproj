@@ -150,12 +150,15 @@
     </Compile>
     <Compile Include="Helpers\DatosGenerales.cs" />
     <Compile Include="Helpers\Mensajes.cs" />
+    <Compile Include="Mapeadores\Asociar\MapeadorAsociarGUI.cs" />
     <Compile Include="Mapeadores\MapeadorBaseGUI.cs" />
     <Compile Include="Mapeadores\Parametros\MapeadorCategoriaGUI.cs" />
     <Compile Include="Mapeadores\Parametros\MapeadorEdificioGUI.cs" />
     <Compile Include="Mapeadores\Parametros\MapeadorEspacioGUI.cs" />
     <Compile Include="Mapeadores\Parametros\MapeadorPisoGUI.cs" />
     <Compile Include="Mapeadores\Parametros\MapeadorSedeGUI.cs" />
+    <Compile Include="Mapeadores\Producto\MapeadorFotoProductoGUI.cs" />
+    <Compile Include="Mapeadores\Producto\MapeadorProductoGUI.cs" />
     <Compile Include="ModeloBD\ModelInventario.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -204,11 +207,15 @@
     <Compile Include="ModeloBD\tb_tipo_producto.cs">
       <DependentUpon>ModelInventario.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Asociar\ModeloAsociar.cs" />
     <Compile Include="Models\Parametros\ModeloCategoria.cs" />
     <Compile Include="Models\Parametros\ModeloEdificio.cs" />
     <Compile Include="Models\Parametros\ModeloEspacio.cs" />
     <Compile Include="Models\Parametros\ModeloPiso.cs" />
     <Compile Include="Models\Parametros\ModeloSede.cs" />
+    <Compile Include="Models\Producto\ModeloCargaImagenProducto.cs" />
+    <Compile Include="Models\Producto\ModeloFotoProducto.cs" />
+    <Compile Include="Models\Producto\ModeloProducto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -316,9 +323,12 @@
     <Content Include="Views\Asociar\Edit.cshtml" />
     <Content Include="Views\Asociar\Index.cshtml" />
     <Content Include="Views\Shared\_Footer_pageList.cshtml" />
+    <Content Include="Views\Producto\UploadFile.cshtml" />
+    <Content Include="Views\Shared\_Mensajes.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="UploadFiles\FotosProductos\Eliminados\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
