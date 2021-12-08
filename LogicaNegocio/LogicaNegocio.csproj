@@ -47,6 +47,7 @@
     <Compile Include="DTO\Parametros\EspacioDTO.cs" />
     <Compile Include="DTO\Parametros\SedeDTO.cs" />
     <Compile Include="DTO\Parametros\PisoDTO.cs" />
+    <Compile Include="DTO\Parametros\TipoProductoDTO.cs" />
     <Compile Include="DTO\Producto\FotoProductoDTO.cs" />
     <Compile Include="DTO\Producto\ProductoDTO.cs" />
     <Compile Include="Implementacion\Asociar\ImplAsociarLogica.cs" />
@@ -55,6 +56,7 @@
     <Compile Include="Implementacion\Parametros\ImplEspacioLogica.cs" />
     <Compile Include="Implementacion\Parametros\ImplPisoLogica.cs" />
     <Compile Include="Implementacion\Parametros\ImplSedeLogica.cs" />
+    <Compile Include="Implementacion\Parametros\ImplTipoProductoLogica.cs" />
     <Compile Include="Implementacion\Producto\ImplProductoLogica.cs" />
     <Compile Include="Mapeadores\Asociar\MapeadorAsociarLogica.cs" />
     <Compile Include="Mapeadores\MapeadorBaseLogica.cs" />
@@ -63,6 +65,7 @@
     <Compile Include="Mapeadores\Parametros\MapeadorEspacioLogica.cs" />
     <Compile Include="Mapeadores\Parametros\MapeadorPisoLogica.cs" />
     <Compile Include="Mapeadores\Parametros\MapeadorSedeLogica.cs" />
+    <Compile Include="Mapeadores\Parametros\MapeadorTipoProductoLogica.cs" />
     <Compile Include="Mapeadores\Producto\MapeadorFotoProductoLogica.cs" />
     <Compile Include="Mapeadores\Producto\MapeadorProductoLogica.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

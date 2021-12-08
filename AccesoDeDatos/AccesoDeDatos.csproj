@@ -49,6 +49,7 @@
     <Compile Include="DbModel\Parametros\EspacioDbModel.cs" />
     <Compile Include="DbModel\Parametros\PisoDbModel.cs" />
     <Compile Include="DbModel\Parametros\SedeDbModel.cs" />
+    <Compile Include="DbModel\Parametros\TipoProductoDbModel.cs" />
     <Compile Include="DbModel\Productos\FotoProductoDbModel.cs" />
     <Compile Include="DbModel\Productos\ProductoDbModel.cs" />
     <Compile Include="Implementacion\Asociar\ImplAsociarDatos.cs" />
@@ -57,6 +58,7 @@
     <Compile Include="Implementacion\Parametros\ImplEspacioDatos.cs" />
     <Compile Include="Implementacion\Parametros\ImplPisoDatos.cs" />
     <Compile Include="Implementacion\Parametros\ImplSedeDatos.cs" />
+    <Compile Include="Implementacion\Parametros\ImplTipoProductoDatos.cs" />
     <Compile Include="Implementacion\Producto\ImplProductoDatos.cs" />
     <Compile Include="Mapeadores\Asociar\MapeadorAsociarDatos.cs" />
     <Compile Include="Mapeadores\MapeadorbaseDatos.cs" />
@@ -65,6 +67,7 @@
     <Compile Include="Mapeadores\Parametros\MapeadorEdificioDatos.cs" />
     <Compile Include="Mapeadores\Parametros\MapeadorPisoDatos.cs" />
     <Compile Include="Mapeadores\Parametros\MapeadorSedeDatos.cs" />
+    <Compile Include="Mapeadores\Parametros\MapeadorTipoProductoDatos.cs" />
     <Compile Include="Mapeadores\Producto\MapeadorFotoProductoDatos.cs" />
     <Compile Include="Mapeadores\Producto\MapeadorProductoDatos.cs" />
     <Compile Include="ModeloDeDatos\ModeloInventario.Context.cs">
