@@ -8,32 +8,51 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Inventario.GUI.ModeloBD;
+using Inventario.GUI.Helpers;
+using LogicaNegocio.DTO.Parametros;
+using Inventario.GUI.Mapeadores.Parametros;
+using Inventario.GUI.Models.Parametros;
+using PagedList;
+using LogicaNegocio.Implementacion.Parametros;
 
 namespace Inventario.GUI.Controllers.Parametros
 {
     public class PersonaController : Controller
     {
-        private InventarioBDEntities db = new InventarioBDEntities();
+        private ImplPersonaLogica logica = new ImplPersonaLogica();
 
         // GET: Persona
-        public async Task<ActionResult> Index()
+        public ActionResult Index(int? page, string filtro = "")
         {
-            return View(await db.tb_persona.ToListAsync());
+            int numPagina = page ?? 1;
+            int registroPorPagina = DatosGenerales.RegistroPorPagina;
+            int totalRegistro;
+            IEnumerable<PersonaDTO> listaDatos = logica.ListarRegistros(
+                            filtro, numPagina, registroPorPagina, out totalRegistro);
+            MapeadorPersonaGUI mapper = new MapeadorPersonaGUI();
+            IEnumerable<ModeloPersona> listaModelo = mapper.MapearTipo1Tipo2(listaDatos);
+            //var registroPagina = listaModelo.ToPagedList(numPagina, 2);
+            var listaPagina = new StaticPagedList<ModeloPersona>
+                (listaModelo, numPagina, registroPorPagina, totalRegistro);
+            return View(listaPagina);
         }
 
         // GET: Persona/Details/5
-        public async Task<ActionResult> Details(int? id)
+        public ActionResult Details(int? id)
         {
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            tb_persona tb_persona = await db.tb_persona.FindAsync(id);
-            if (tb_persona == null)
+            PersonaDTO PersonaDTO = logica.BuscarRegistro(id.Value);
+            if (PersonaDTO == null)
             {
                 return HttpNotFound();
             }
-            return View(tb_persona);
+            MapeadorPersonaGUI mapper = new MapeadorPersonaGUI();
+            ModeloPersona modelo = mapper.MapearTipo1Tipo2(PersonaDTO);
+            return View(modelo);
         }
 
         // GET: Persona/Create
@@ -47,31 +66,35 @@ namespace Inventario.GUI.Controllers.Parametros
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "id,cedula,nombre,apellido,edad,celular")] tb_persona tb_persona)
+        public ActionResult Create([Bind(Include = "id,cedula,nombre,apellido,edad,correo,celular")] ModeloPersona modelo)
         {
+
             if (ModelState.IsValid)
             {
-                db.tb_persona.Add(tb_persona);
-                await db.SaveChangesAsync();
+                MapeadorPersonaGUI mapper = new MapeadorPersonaGUI();
+                PersonaDTO personaDTO = mapper.MapearTipo2Tipo1(modelo);
+                logica.GuardarRegistro(personaDTO);
                 return RedirectToAction("Index");
             }
 
-            return View(tb_persona);
+            return View(modelo);
         }
 
         // GET: Persona/Edit/5
-        public async Task<ActionResult> Edit(int? id)
+        public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            tb_persona tb_persona = await db.tb_persona.FindAsync(id);
-            if (tb_persona == null)
+            PersonaDTO personaDTO = logica.BuscarRegistro(id.Value);
+            if (personaDTO == null)
             {
                 return HttpNotFound();
             }
-            return View(tb_persona);
+            MapeadorPersonaGUI mapper = new MapeadorPersonaGUI();
+            ModeloPersona modelo = mapper.MapearTipo1Tipo2(personaDTO);
+            return View(modelo);
         }
 
         // POST: Persona/Edit/5
@@ -79,50 +102,57 @@ namespace Inventario.GUI.Controllers.Parametros
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "id,cedula,nombre,apellido,edad,celular")] tb_persona tb_persona)
+        public ActionResult Edit([Bind(Include = "id,cedula,nombre,apellido,edad,correo,celular")] ModeloPersona modelo)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(tb_persona).State = EntityState.Modified;
-                await db.SaveChangesAsync();
+                MapeadorPersonaGUI mapper = new MapeadorPersonaGUI();
+                PersonaDTO personaDTO = mapper.MapearTipo2Tipo1(modelo);
+                logica.EditarRegistro(personaDTO);
                 return RedirectToAction("Index");
             }
-            return View(tb_persona);
+            return View(modelo);
         }
 
         // GET: Persona/Delete/5
-        public async Task<ActionResult> Delete(int? id)
+        public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            tb_persona tb_persona = await db.tb_persona.FindAsync(id);
-            if (tb_persona == null)
+            PersonaDTO personaDTO = logica.BuscarRegistro(id.Value);
+            if (personaDTO == null)
             {
                 return HttpNotFound();
             }
-            return View(tb_persona);
+            MapeadorPersonaGUI mapper = new MapeadorPersonaGUI();
+            ModeloPersona modelo = mapper.MapearTipo1Tipo2(personaDTO);
+            return View(modelo);
         }
 
         // POST: Persona/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(int id)
         {
-            tb_persona tb_persona = await db.tb_persona.FindAsync(id);
-            db.tb_persona.Remove(tb_persona);
-            await db.SaveChangesAsync();
-            return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
+            bool respuesta = logica.EliminarRegistro(id);
+            if (respuesta)
             {
-                db.Dispose();
+                return RedirectToAction("Index");
             }
-            base.Dispose(disposing);
+            else
+            {
+                PersonaDTO personaDTO = logica.BuscarRegistro(id);
+                if (personaDTO == null)
+                {
+                    return HttpNotFound();
+                }
+                MapeadorPersonaGUI mapper = new MapeadorPersonaGUI();
+                ViewBag.mensaje = Mensajes.mensajeErrorEliminar;
+                ModeloPersona modelo = mapper.MapearTipo1Tipo2(personaDTO);
+                return View(modelo);
+            }
         }
     }
 }

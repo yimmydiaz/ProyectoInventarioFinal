@@ -156,6 +156,7 @@
     <Compile Include="Mapeadores\Parametros\MapeadorEdificioGUI.cs" />
     <Compile Include="Mapeadores\Parametros\MapeadorEspacioGUI.cs" />
     <Compile Include="Mapeadores\Parametros\MapeadorMarcaGUI.cs" />
+    <Compile Include="Mapeadores\Parametros\MapeadorPersonaGUI.cs" />
     <Compile Include="Mapeadores\Parametros\MapeadorPisoGUI.cs" />
     <Compile Include="Mapeadores\Parametros\MapeadorSedeGUI.cs" />
     <Compile Include="Mapeadores\Parametros\MapeadorTipoProductoGUI.cs" />
@@ -214,6 +215,7 @@
     <Compile Include="Models\Parametros\ModeloEdificio.cs" />
     <Compile Include="Models\Parametros\ModeloEspacio.cs" />
     <Compile Include="Models\Parametros\ModeloMarca.cs" />
+    <Compile Include="Models\Parametros\ModeloPersona.cs" />
     <Compile Include="Models\Parametros\ModeloPiso.cs" />
     <Compile Include="Models\Parametros\ModeloSede.cs" />
     <Compile Include="Models\Parametros\ModeloTipoProducto.cs" />
