@@ -16,6 +16,7 @@ namespace Inventario.GUI.Mapeadores.Producto
                 Id = entrada.Id,
                 IdProducto = entrada.IdProducto,
                 NombreFoto = entrada.NombreFoto
+                
             };
         }
 

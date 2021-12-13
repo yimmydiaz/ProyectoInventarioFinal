@@ -15,12 +15,25 @@ using Inventario.GUI.Mapeadores.Producto;
 using Inventario.GUI.Models.Producto;
 using PagedList;
 using System.IO;
+using LogicaNegocio.Implementacion.Parametros;
+using LogicaNegocio.DTO.Parametros;
+using Inventario.GUI.Mapeadores.Parametros;
 
 namespace Inventario.GUI.Controllers.Producto
 {
     public class ProductoController : Controller
     {
         private ImplProductoLogica logica = new ImplProductoLogica();
+
+        /// <summary>
+        /// Listado para crear un producto
+        /// </summary>
+        private ImplCategoriaLogica logicaCategoria = new ImplCategoriaLogica();
+        private ImplEspacioLogica logicaEspacio = new ImplEspacioLogica();
+        private ImplMarcaLogica logicaMarca = new ImplMarcaLogica();
+        private ImplTipoProductoLogica logicaTipoProducto = new ImplTipoProductoLogica();
+
+
 
         // GET: Producto
         public ActionResult Index(int? page, string filtro = "")
@@ -59,10 +72,22 @@ namespace Inventario.GUI.Controllers.Producto
         // GET: Producto/Create
         public ActionResult Create()
         {
-            /*ViewBag.id_categoria = new SelectList(db.tb_categoria, "id", "nombre");
-            ViewBag.id_espacio = new SelectList(db.tb_espacio, "id", "nombre");
-            ViewBag.id_marca = new SelectList(db.tb_marca, "id", "nombre");
-            ViewBag.id_tipoProducto = new SelectList(db.tb_tipo_producto, "id", "nombre");*/
+            IEnumerable<CategoriaDTO> listaCategoria = logicaCategoria.ListarCategorias();
+            MapeadorCategoriaGUI mapperCategoria = new MapeadorCategoriaGUI();
+
+            IEnumerable<EspacioDTO> listaEspacio = logicaEspacio.ListarEspacios() ;
+            MapeadorEspacioGUI mapperEspacio = new MapeadorEspacioGUI();
+
+            IEnumerable<MarcaDTO> listaMarca = logicaMarca.ListarMarcas();
+            MapeadorMarcaGUI mapperMarca = new MapeadorMarcaGUI();
+
+            IEnumerable<TipoProductoDTO> listaTipoProducto = logicaTipoProducto.ListarTipoProductos();
+            MapeadorTipoProductoGUI mapperTipoProducto = new MapeadorTipoProductoGUI();
+
+            ViewBag.id_categoria = new SelectList(mapperCategoria.MapearTipo1Tipo2(listaCategoria), "id", "nombre");
+            ViewBag.id_espacio = new SelectList(mapperEspacio.MapearTipo1Tipo2(listaEspacio), "id", "nombre");
+            ViewBag.id_marca = new SelectList(mapperMarca.MapearTipo1Tipo2(listaMarca), "id", "nombre");
+            ViewBag.id_tipoProducto = new SelectList(mapperTipoProducto.MapearTipo1Tipo2(listaTipoProducto), "id", "nombre");
             return View();
         }
 
@@ -71,40 +96,71 @@ namespace Inventario.GUI.Controllers.Producto
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "id,nombre,fecha,serial_producto,id_marca,id_categoria,id_tipoProducto,id_espacio")] tb_producto tb_producto)
+        public ActionResult Create([Bind(Include = "id,nombre,fecha,serial_producto,id_marca,id_categoria,id_tipoProducto,id_espacio")] ModeloProducto modelo)
         {
-           /* if (ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                db.tb_producto.Add(tb_producto);
-                await db.SaveChangesAsync();
+                MapeadorProductoGUI mapper = new MapeadorProductoGUI();
+                ProductoDTO productoDTO = mapper.MapearTipo2Tipo1(modelo);
+                logica.GuardarRegistro(productoDTO);
                 return RedirectToAction("Index");
             }
 
-            ViewBag.id_categoria = new SelectList(db.tb_categoria, "id", "nombre", tb_producto.id_categoria);
-            ViewBag.id_espacio = new SelectList(db.tb_espacio, "id", "nombre", tb_producto.id_espacio);
-            ViewBag.id_marca = new SelectList(db.tb_marca, "id", "nombre", tb_producto.id_marca);
-            ViewBag.id_tipoProducto = new SelectList(db.tb_tipo_producto, "id", "nombre", tb_producto.id_tipoProducto);
-            */return View(tb_producto);
+            // Mapeadores
+            IEnumerable<CategoriaDTO> listaCategoria = logicaCategoria.ListarCategorias();
+            MapeadorCategoriaGUI mapperCategoria = new MapeadorCategoriaGUI();
+
+            IEnumerable<EspacioDTO> listaEspacio = logicaEspacio.ListarEspacios();
+            MapeadorEspacioGUI mapperEspacio = new MapeadorEspacioGUI();
+
+            IEnumerable<MarcaDTO> listaMarca = logicaMarca.ListarMarcas();
+            MapeadorMarcaGUI mapperMarca = new MapeadorMarcaGUI();
+
+            IEnumerable<TipoProductoDTO> listaTipoProducto = logicaTipoProducto.ListarTipoProductos();
+            MapeadorTipoProductoGUI mapperTipoProducto = new MapeadorTipoProductoGUI();
+
+
+            ViewBag.id_categoria = new SelectList(mapperCategoria.MapearTipo1Tipo2(listaCategoria), "id", "nombre", modelo.NombreCategoria);
+            ViewBag.id_espacio = new SelectList(mapperEspacio.MapearTipo1Tipo2(listaEspacio), "id", "nombre", modelo.NombreEspacio);
+            ViewBag.id_marca = new SelectList(mapperMarca.MapearTipo1Tipo2(listaMarca), "id", "nombre", modelo.NombreMarca);
+            ViewBag.id_tipoProducto = new SelectList(mapperTipoProducto.MapearTipo1Tipo2(listaTipoProducto), "id", "nombre", modelo.NombreTipoProducto);
+            return View(modelo);
         }
 
         // GET: Producto/Edit/5
         public async Task<ActionResult> Edit(int? id)
-        {/*
+        {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            tb_producto tb_producto = await db.tb_producto.FindAsync(id);
-            if (tb_producto == null)
+            ProductoDTO productoDTO = logica.BuscarRegistro(id.Value);
+            if (productoDTO == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.id_categoria = new SelectList(db.tb_categoria, "id", "nombre", tb_producto.id_categoria);
-            ViewBag.id_espacio = new SelectList(db.tb_espacio, "id", "nombre", tb_producto.id_espacio);
-            ViewBag.id_marca = new SelectList(db.tb_marca, "id", "nombre", tb_producto.id_marca);
-            ViewBag.id_tipoProducto = new SelectList(db.tb_tipo_producto, "id", "nombre", tb_producto.id_tipoProducto);
-            return View(tb_producto);*/
-            return View();
+
+            MapeadorProductoGUI mapper = new MapeadorProductoGUI();
+            ModeloProducto modelo = mapper.MapearTipo1Tipo2(productoDTO);
+            // Mapeadores
+            IEnumerable<CategoriaDTO> listaCategoria = logicaCategoria.ListarCategorias();
+            MapeadorCategoriaGUI mapperCategoria = new MapeadorCategoriaGUI();
+
+            IEnumerable<EspacioDTO> listaEspacio = logicaEspacio.ListarEspacios();
+            MapeadorEspacioGUI mapperEspacio = new MapeadorEspacioGUI();
+
+            IEnumerable<MarcaDTO> listaMarca = logicaMarca.ListarMarcas();
+            MapeadorMarcaGUI mapperMarca = new MapeadorMarcaGUI();
+
+            IEnumerable<TipoProductoDTO> listaTipoProducto = logicaTipoProducto.ListarTipoProductos();
+            MapeadorTipoProductoGUI mapperTipoProducto = new MapeadorTipoProductoGUI();
+
+            ViewBag.id_categoria = new SelectList(mapperCategoria.MapearTipo1Tipo2(listaCategoria), "id", "nombre", productoDTO.NombreCategoria);
+            ViewBag.id_espacio = new SelectList(mapperEspacio.MapearTipo1Tipo2(listaEspacio), "id", "nombre", productoDTO.NombreEspacio);
+            ViewBag.id_marca = new SelectList(mapperMarca.MapearTipo1Tipo2(listaMarca), "id", "nombre", productoDTO.NombreMarca);
+            ViewBag.id_tipoProducto = new SelectList(mapperTipoProducto.MapearTipo1Tipo2(listaTipoProducto), "id", "nombre", productoDTO.NombreTipoProducto);
+            return View(modelo);
+           
         }
 
         // POST: Producto/Edit/5
@@ -112,20 +168,36 @@ namespace Inventario.GUI.Controllers.Producto
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "id,nombre,fecha,serial_producto,id_marca,id_categoria,id_tipoProducto,id_espacio")] tb_producto tb_producto)
+        public ActionResult Edit([Bind(Include = "id,nombre,fecha,serial_producto,id_marca,id_categoria,id_tipoProducto,id_espacio")] ModeloProducto modelo)
         {
-            /*
+            
             if (ModelState.IsValid)
             {
-                db.Entry(tb_producto).State = EntityState.Modified;
-                await db.SaveChangesAsync();
+                MapeadorProductoGUI mapper = new MapeadorProductoGUI();
+                ProductoDTO productoDTO = mapper.MapearTipo2Tipo1(modelo);
+                logica.EditarRegistro(productoDTO);
                 return RedirectToAction("Index");
             }
-            ViewBag.id_categoria = new SelectList(db.tb_categoria, "id", "nombre", tb_producto.id_categoria);
-            ViewBag.id_espacio = new SelectList(db.tb_espacio, "id", "nombre", tb_producto.id_espacio);
-            ViewBag.id_marca = new SelectList(db.tb_marca, "id", "nombre", tb_producto.id_marca);
-            ViewBag.id_tipoProducto = new SelectList(db.tb_tipo_producto, "id", "nombre", tb_producto.id_tipoProducto);
-            */return View(tb_producto);
+
+
+            // Mapeadores
+            IEnumerable<CategoriaDTO> listaCategoria = logicaCategoria.ListarCategorias();
+            MapeadorCategoriaGUI mapperCategoria = new MapeadorCategoriaGUI();
+
+            IEnumerable<EspacioDTO> listaEspacio = logicaEspacio.ListarEspacios();
+            MapeadorEspacioGUI mapperEspacio = new MapeadorEspacioGUI();
+
+            IEnumerable<MarcaDTO> listaMarca = logicaMarca.ListarMarcas();
+            MapeadorMarcaGUI mapperMarca = new MapeadorMarcaGUI();
+
+            IEnumerable<TipoProductoDTO> listaTipoProducto = logicaTipoProducto.ListarTipoProductos();
+            MapeadorTipoProductoGUI mapperTipoProducto = new MapeadorTipoProductoGUI();
+
+            ViewBag.id_categoria = new SelectList(mapperCategoria.MapearTipo1Tipo2(listaCategoria), "id", "nombre", modelo.Id_Categoria);
+            ViewBag.id_espacio = new SelectList(mapperEspacio.MapearTipo1Tipo2(listaEspacio), "id", "nombre", modelo.Id_Espacio);
+            ViewBag.id_marca = new SelectList(mapperMarca.MapearTipo1Tipo2(listaMarca), "id", "nombre", modelo.Id_Marca);
+            ViewBag.id_tipoProducto = new SelectList(mapperTipoProducto.MapearTipo1Tipo2(listaTipoProducto), "id", "nombre",modelo.Id_TipoProducto);
+            return View(modelo);
         }
 
         // GET: Producto/Delete/5
@@ -208,7 +280,7 @@ namespace Inventario.GUI.Controllers.Producto
                     try
                     {
                         DateTime ahora = DateTime.Now;
-                        string fecha_nombre = String.Format("{0}_{1}_{2}_{3}_{4}_{5}",
+                        string fecha_nombre = String.Format("{0}_{1}_{2}_{3}_{4}_{5}_",
                                                 ahora.Day, ahora.Month, ahora.Year, ahora.Hour,
                                                 ahora.Minute, ahora.Millisecond);
 

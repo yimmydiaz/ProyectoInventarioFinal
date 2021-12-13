@@ -12,7 +12,7 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>tb_producto</h4>
+        <h4>Editar Producto</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.Id)
@@ -24,14 +24,14 @@
                 @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
             </div>
         </div>
-
+        <!--
         <div class="form-group">
             @Html.LabelFor(model => model.Fecha, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Fecha, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Fecha, "", new { @class = "text-danger" })
             </div>
-        </div>
+        </div>-->
 
         <div class="form-group">
             @Html.LabelFor(model => model.SerialProducto, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -42,7 +42,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Id_Marca, "id_marca", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Id_Marca, "Marca", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownList("id_marca", null, htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Id_Marca, "", new { @class = "text-danger" })
@@ -50,7 +50,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Id_Categoria, "id_categoria", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Id_Categoria, "Categoria", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownList("id_categoria", null, htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Id_Categoria, "", new { @class = "text-danger" })
@@ -58,7 +58,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Id_TipoProducto, "id_tipoProducto", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Id_TipoProducto, "Tipo Producto", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownList("id_tipoProducto", null, htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Id_TipoProducto, "", new { @class = "text-danger" })
@@ -66,7 +66,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Id_Espacio, "id_espacio", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Id_Espacio, "Espacio", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownList("id_espacio", null, htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Id_Espacio, "", new { @class = "text-danger" })
@@ -75,14 +75,14 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="Guardar" class="btn btn-success" />
             </div>
         </div>
     </div>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Volver", "Index", new { }, new { @class = "btn btn-warning" })
 </div>
 
 @section Scripts {

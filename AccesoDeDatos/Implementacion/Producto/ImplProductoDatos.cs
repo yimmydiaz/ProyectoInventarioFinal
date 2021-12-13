@@ -57,7 +57,7 @@ namespace AccesoDeDatos.Implementacion.Producto
 
                     MapeadorProductoDatos mapeador = new MapeadorProductoDatos();
                     var regis = mapeador.MapearTipo2Tipo1(registro);
-                    regis.fecha = DateTime.Now;
+                    //regis.fecha = DateTime.Now;
                     bd.tb_producto.Add(regis);
                     bd.SaveChanges();
                     return true;
@@ -176,8 +176,9 @@ namespace AccesoDeDatos.Implementacion.Producto
                     {
                         return false;
                     }
-                    registro.estado = false;
-                    bd.Entry(registro).State = EntityState.Modified;
+                    //registro.estado = false;
+                    //bd.tb_producto.Remove(registro);
+                    bd.tb_fotos.Remove(registro);
                     bd.SaveChanges();
                     return true;
                 }
@@ -224,7 +225,7 @@ namespace AccesoDeDatos.Implementacion.Producto
             {
                 //var lista = bd.tb_fotos.Where(x => x.id_vehiculo == id).ToList(); // forma landa
                 var lista = (from f in bd.tb_fotos
-                             where f.id_producto == id && f.estado
+                             where f.id_producto == id //&& f.estado
                              select f).ToList(); // de forma linkiu
                 MapeadorFotoProductoDatos mapeador = new MapeadorFotoProductoDatos();
                 IEnumerable<FotoProductoDbModel> listaDbModel = mapeador.MapearTipo1Tipo2(lista);
