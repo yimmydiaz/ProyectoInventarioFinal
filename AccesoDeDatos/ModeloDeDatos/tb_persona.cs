@@ -14,6 +14,8 @@ namespace AccesoDeDatos.ModeloDeDatos
     
     public partial class tb_persona
     {
+        internal string correo;
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public tb_persona()
         {

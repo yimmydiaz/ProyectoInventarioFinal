@@ -48,6 +48,7 @@
     <Compile Include="DbModel\Parametros\MarcaDbModel.cs" />
     <Compile Include="DbModel\Parametros\EdificioDbModel.cs" />
     <Compile Include="DbModel\Parametros\EspacioDbModel.cs" />
+    <Compile Include="DbModel\Parametros\PersonaDbModel.cs" />
     <Compile Include="DbModel\Parametros\PisoDbModel.cs" />
     <Compile Include="DbModel\Parametros\SedeDbModel.cs" />
     <Compile Include="DbModel\Parametros\TipoProductoDbModel.cs" />
@@ -58,6 +59,7 @@
     <Compile Include="Implementacion\Parametros\ImplEdificioDatos.cs" />
     <Compile Include="Implementacion\Parametros\ImplEspacioDatos.cs" />
     <Compile Include="Implementacion\Parametros\ImplMarcaDatos.cs" />
+    <Compile Include="Implementacion\Parametros\ImplPersonaDatos.cs" />
     <Compile Include="Implementacion\Parametros\ImplPisoDatos.cs" />
     <Compile Include="Implementacion\Parametros\ImplSedeDatos.cs" />
     <Compile Include="Implementacion\Parametros\ImplTipoProductoDatos.cs" />
@@ -68,6 +70,7 @@
     <Compile Include="Mapeadores\Parametros\MapeadorCategoriaDatos.cs" />
     <Compile Include="Mapeadores\Parametros\MapeadorEspacioDatos.cs" />
     <Compile Include="Mapeadores\Parametros\MapeadorEdificioDatos.cs" />
+    <Compile Include="Mapeadores\Parametros\MapeadorPersonaDatos.cs" />
     <Compile Include="Mapeadores\Parametros\MapeadorPisoDatos.cs" />
     <Compile Include="Mapeadores\Parametros\MapeadorSedeDatos.cs" />
     <Compile Include="Mapeadores\Parametros\MapeadorTipoProductoDatos.cs" />

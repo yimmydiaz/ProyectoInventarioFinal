@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Inventario.GUI.ModeloBD.tb_persona>
+﻿@model IEnumerable<Inventario.GUI.Models.Parametros.ModeloPersona>
 
 @{
     ViewBag.Title = "Index";
@@ -7,51 +7,60 @@
 <h2>Lista De Persona</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Crear Peronsa", "Create", new { }, new { @class = "btn btn-success" })
 </p>
+<input type="text" name="txtFiltro" id="txtFiltro" />
+<button type="submit" class="btn btn-info "> Filtrar</button>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.cedula)
+            @Html.DisplayNameFor(model => model.Cedula)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.nombre)
+            @Html.DisplayNameFor(model => model.Nombre)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.apellido)
+            @Html.DisplayNameFor(model => model.Apellido)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.edad)
+            @Html.DisplayNameFor(model => model.Edad)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.celular)
+            @Html.DisplayNameFor(model => model.Celular)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Correo)
         </th>
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.cedula)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.nombre)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.apellido)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.edad)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.celular)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.id })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cedula)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Apellido)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Edad)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Celular)
+            </td>
+            <th>
+                @Html.DisplayFor(modelItem => item.Correo)
+            </th>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-primary" }) |
+                @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-primary" }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-primary" })
+            </td>
+        </tr>
+    }
 
 </table>
