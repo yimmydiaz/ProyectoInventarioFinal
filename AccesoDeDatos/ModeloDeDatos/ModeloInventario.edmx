@@ -63,6 +63,7 @@
           <Property Name="apellido" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="edad" Type="int" Nullable="false" />
           <Property Name="celular" Type="nvarchar" MaxLength="15" Nullable="false" />
+          <Property Name="correo" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="tb_piso">
           <Key>
@@ -346,6 +347,7 @@
           <Property Name="edad" Type="Int32" Nullable="false" />
           <Property Name="celular" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="tb_asociar" Relationship="Self.FK__tb_asocia__id_pe__2C3393D0" FromRole="tb_persona" ToRole="tb_asociar" />
+          <Property Name="correo" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="tb_piso">
           <Key>
@@ -630,6 +632,7 @@
           <EntitySetMapping Name="tb_persona">
             <EntityTypeMapping TypeName="InventarioBDModel.tb_persona">
               <MappingFragment StoreEntitySet="tb_persona">
+                <ScalarProperty Name="correo" ColumnName="correo" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="cedula" ColumnName="cedula" />
                 <ScalarProperty Name="nombre" ColumnName="nombre" />

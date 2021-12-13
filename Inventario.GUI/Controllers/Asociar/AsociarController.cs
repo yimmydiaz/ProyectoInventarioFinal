@@ -17,6 +17,9 @@ using PagedList;
 using LogicaNegocio.Implementacion.Producto;
 using LogicaNegocio.DTO.Producto;
 using Inventario.GUI.Mapeadores.Producto;
+using LogicaNegocio.Implementacion.Parametros;
+using LogicaNegocio.DTO.Parametros;
+using Inventario.GUI.Mapeadores.Parametros;
 
 namespace Inventario.GUI.Controllers.Asociar
 {
@@ -24,6 +27,7 @@ namespace Inventario.GUI.Controllers.Asociar
     {
         private ImplAsociarLogica logica = new ImplAsociarLogica();
         private ImplProductoLogica implProducto = new ImplProductoLogica();
+        private ImplPersonaLogica ImplPersona = new ImplPersonaLogica();
 
         // GET: Asociar
         public ActionResult Index(int? page, string filtro = "")
@@ -61,11 +65,14 @@ namespace Inventario.GUI.Controllers.Asociar
         // GET: Asociar/Create
         public ActionResult Create()
         {
-            IEnumerable<ProductoDTO> listaDatos = implProducto.ListarProductos();
-            MapeadorProductoGUI mapper = new MapeadorProductoGUI();
+            IEnumerable<ProductoDTO> listaProductos = implProducto.ListarProductos();
+            MapeadorProductoGUI mapperProducto = new MapeadorProductoGUI();
 
-           // ViewBag.id_persona = new SelectList(db.tb_persona, "id", "cedula");
-           // ViewBag.id_producto = new SelectList(mapper.MapearTipo1Tipo2(listaDatos), "id", "nombre");
+            IEnumerable<PersonaDTO> listaPersona = ImplPersona.ListarPersonas();
+            MapeadorPersonaGUI mapperPersona = new MapeadorPersonaGUI();
+
+            ViewBag.id_persona = new SelectList(mapperPersona.MapearTipo1Tipo2(listaPersona), "id", "nombre");
+            ViewBag.id_producto = new SelectList(mapperProducto.MapearTipo1Tipo2(listaProductos), "id", "nombre");
             return View();
         }
 
@@ -86,7 +93,11 @@ namespace Inventario.GUI.Controllers.Asociar
             IEnumerable<ProductoDTO> listaDatos = implProducto.ListarProductos();
             MapeadorProductoGUI mapper1 = new MapeadorProductoGUI();
 
-           // ViewBag.id_persona = new SelectList(db.tb_persona, "id", "cedula", tb_asociar.id_persona);
+            IEnumerable<PersonaDTO> listaPersona = ImplPersona.ListarPersonas();
+            MapeadorPersonaGUI mapperPersona = new MapeadorPersonaGUI();
+
+
+            ViewBag.id_persona = new SelectList(mapperPersona.MapearTipo1Tipo2(listaPersona), "id", "nombre", modelo.NombrePersona);
             ViewBag.id_producto = new SelectList(mapper1.MapearTipo1Tipo2(listaDatos), "id", "nombre", modelo.NombreProducto);
             return View(modelo);
         }
@@ -109,7 +120,11 @@ namespace Inventario.GUI.Controllers.Asociar
             IEnumerable<ProductoDTO> listaDatos = implProducto.ListarProductos();
             MapeadorProductoGUI mapper1 = new MapeadorProductoGUI();
 
-            //ViewBag.id_persona = new SelectList(db.tb_persona, "id", "cedula", tb_asociar.id_persona);
+            IEnumerable<PersonaDTO> listaPersona = ImplPersona.ListarPersonas();
+            MapeadorPersonaGUI mapperPersona = new MapeadorPersonaGUI();
+
+
+            ViewBag.id_persona = new SelectList(mapperPersona.MapearTipo1Tipo2(listaPersona), "id", "nombre", asociarDTO.NombrePersona);
             ViewBag.id_producto = new SelectList(mapper1.MapearTipo1Tipo2(listaDatos), "id", "nombre", asociarDTO.NombreProducto);
             return View(modelo);
         }
@@ -131,8 +146,11 @@ namespace Inventario.GUI.Controllers.Asociar
 
             IEnumerable<ProductoDTO> listaDatos = implProducto.ListarProductos();
             MapeadorProductoGUI mapper1 = new MapeadorProductoGUI();
+            IEnumerable<PersonaDTO> listaPersona = ImplPersona.ListarPersonas();
+            MapeadorPersonaGUI mapperPersona = new MapeadorPersonaGUI();
 
-           // ViewBag.id_persona = new SelectList(db.tb_persona, "id", "cedula", tb_asociar.id_persona);
+
+            ViewBag.id_persona = new SelectList(mapperPersona.MapearTipo1Tipo2(listaPersona), "id", "nombre", modelo.NombrePersona);
             ViewBag.id_producto = new SelectList(mapper1.MapearTipo1Tipo2(listaDatos), "id", "nombre", modelo.NombreProducto);
             return View(modelo);
         }

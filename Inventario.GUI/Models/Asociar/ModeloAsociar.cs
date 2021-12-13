@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Web;
 
@@ -41,6 +42,7 @@ namespace Inventario.GUI.Models.Asociar
 
         private string nombreProducto;
 
+        [DisplayName("Nombre Producto")]
         public string NombreProducto
         {
             get { return nombreProducto; }
@@ -49,6 +51,7 @@ namespace Inventario.GUI.Models.Asociar
 
         private string nombrePersona;
 
+        [DisplayName("Nombre Persona")]
         public string NombrePersona
         {
             get { return nombrePersona; }
