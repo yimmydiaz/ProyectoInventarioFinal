@@ -10,6 +10,10 @@
 <div>
     <h4>Eliminar Producto</h4>
     <hr />
+    @if (ViewBag.mensaje != null)
+    {
+        <strong style="color:red">@ViewBag.mensaje</strong>
+    }
     <dl class="dl-horizontal">
         <dt>
             @Html.DisplayNameFor(model => model.Nombre)
@@ -69,10 +73,11 @@
 
     </dl>
 
-    @using (Html.BeginForm()) {
+    @using (Html.BeginForm())
+    {
         @Html.AntiForgeryToken()
         <div class="form-actions no-color">
-            <input type="submit" value="Eliminar" class="btn btn-danger" /> 
+            <input type="submit" value="Eliminar" class="btn btn-danger" />
             @Html.ActionLink("Volver", "Index", new { }, new { @class = "btn btn-warning" })
         </div>
     }

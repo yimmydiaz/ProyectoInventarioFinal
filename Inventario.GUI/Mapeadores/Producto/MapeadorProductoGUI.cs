@@ -46,7 +46,7 @@ namespace Inventario.GUI.Mapeadores.Producto
                 Id = entrada.Id,
                 Nombre = entrada.Nombre,
                 Fecha = DateTime.Now,
-                SerialProducto ="Ahhsh1", //entrada.SerialProducto,
+                SerialProducto ="8e9321kk1j11", //entrada.SerialProducto,
                 Id_Marca = entrada.Id_Marca,
                 Id_Categoria = entrada.Id_Categoria,
                 Id_TipoProducto = entrada.Id_TipoProducto,

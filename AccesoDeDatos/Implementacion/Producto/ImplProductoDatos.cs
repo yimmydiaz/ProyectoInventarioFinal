@@ -132,7 +132,7 @@ namespace AccesoDeDatos.Implementacion.Producto
                 using (InventarioBDEntities bd = new InventarioBDEntities())
                 {
                     tb_producto registro = bd.tb_producto.Find(id);
-                    if (registro == null)
+                    if (registro == null )
                     {
                         return false;
                     }
