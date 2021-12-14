@@ -8,6 +8,7 @@
 @{int contador = 1; }
 <p>
     @Html.ActionLink("Crear Producto", "Create", new { }, new { @class = "btn btn-success" })
+    @Html.ActionLink("Imprimir reporte", "Print", new { }, new { @class = "btn btn-warning" })
 </p>
 <form method="get" action=@Url.Action("Index", "Producto" )>
     <div class="form-group">

@@ -18,6 +18,8 @@ using System.IO;
 using LogicaNegocio.Implementacion.Parametros;
 using LogicaNegocio.DTO.Parametros;
 using Inventario.GUI.Mapeadores.Parametros;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
 
 namespace Inventario.GUI.Controllers.Producto
 {
@@ -332,6 +334,31 @@ namespace Inventario.GUI.Controllers.Producto
                 System.IO.File.Move(rutaOrigenCompletaArchivo, rutaDestinoCompletaArchivo);
             }
             return RedirectToAction("Index");
+        }
+
+        public FileStreamResult Print() 
+        {
+            DateTime hoy = DateTime.Now;
+            string fecha_creacion = String.Format("{0}_{1}_{2}_{3}", hoy.Day, hoy.Hour, hoy.Minute, hoy.Millisecond);
+            string nombreArchivo = string.Concat("Productos_" + fecha_creacion +".pdf");
+            string ruta = Server.MapPath("~/pdfReports/Profuctos/" + nombreArchivo);
+            MapeadorProductoGUI mapeador = new MapeadorProductoGUI();
+            IEnumerable<ModeloProducto> listaDatos = mapeador.MapearTipo1Tipo2(logica.ListarRegistrosReporte());
+            FabricaArchivosPDF fabrica = new FabricaArchivosPDF();
+            bool archivoCreado = fabrica.CrearListadoProductosEnPDF(ruta, "Listado Productos", listaDatos);
+            if (archivoCreado)
+            {
+                var fileStream = new FileStream(ruta,
+                                                FileMode.Open,
+                                                FileAccess.Read
+                                                );
+                var fsResult = new FileStreamResult(fileStream, "application/pdf");
+                return fsResult;
+            }
+            else
+            {
+                throw new Exception("Error");
+            }
         }
     }
 }

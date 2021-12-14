@@ -19,6 +19,14 @@ namespace LogicaNegocio.Implementacion.Producto
             this.accesoDatos = new ImplProductoDatos();
         }
 
+        public IEnumerable<ProductoDTO> ListarRegistrosReporte()
+        {
+            var listado = this.accesoDatos.ListarRegistrosReporte();
+            MapeadorProductoLogica mapeador = new MapeadorProductoLogica();
+            return mapeador.MapearTipo1Tipo2(listado);
+
+        }
+
         public IEnumerable<ProductoDTO> ListarRegistros(String filtro,
                                                      int numPagina,
                                                      int registroPorPagina,
