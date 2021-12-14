@@ -5,7 +5,7 @@
 }
 
 <h2>Lista De Categorias</h2>
-
+@{int contador = 1; }
 <p>
     @Html.ActionLink("Crear Categoria", "Create", new { }, new { @class = "btn btn-success" })
 </p>
@@ -13,15 +13,17 @@
 <button type="submit" class="btn btn-info "> Filtrar</button>
 <table class="table">
     <tr>
+        <th>Nº</th>
         <th>
             @Html.DisplayNameFor(model => model.Nombre)
         </th>
-        <th></th>
+
     </tr>
 
     @foreach (var item in Model)
     {
         <tr>
+            <td>@contador</td>
             <td>
                 @Html.DisplayFor(modelItem => item.Nombre)
             </td>
@@ -30,7 +32,9 @@
                 @Html.ActionLink("Detalles", "Details", new { id = item.Id }, new { @class = "btn btn-warning" }) |
                 @Html.ActionLink("Eliminar", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
             </td>
+
         </tr>
+        contador++;
     }
 
 </table>

@@ -5,7 +5,7 @@
 }
 
 <h2>Lista de Sedes</h2>
-
+@{int contador = 1; }
 <p>
     @Html.ActionLink("Crear Sede", "Create", new { }, new { @class = "btn btn-success" })
 </p>
@@ -13,6 +13,7 @@
 <button type="submit" class="btn btn-info "> Filtrar</button>
 <table class="table">
     <tr>
+        <th>Nº</th>
         <th>
             @Html.DisplayNameFor(model => model.Nombre)
         </th>
@@ -25,6 +26,7 @@
     @foreach (var item in Model)
     {
         <tr>
+            <td>@contador</td>
             <td>
                 @Html.DisplayFor(modelItem => item.Nombre)
             </td>
@@ -37,6 +39,7 @@
                 @Html.ActionLink("Eliminar", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
             </td>
         </tr>
+        contador++;
     }
 
 </table>

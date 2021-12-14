@@ -18,6 +18,7 @@ namespace Inventario.GUI.Models.Asociar
 
         private string ubicacion;
 
+        [DisplayName("Ubicación Entrega")]
         public string Ubicacion
         {
             get { return ubicacion; }
