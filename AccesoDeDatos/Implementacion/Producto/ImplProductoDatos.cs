@@ -18,6 +18,28 @@ namespace AccesoDeDatos.Implementacion.Producto
         /// </summary>
         /// <param name="filtro">Filtro a aplicar</param>
         /// <returns>Lista de registros con el filtro aplicado</returns>
+        /// {
+
+
+        ///
+
+
+        public IEnumerable<ProductoDbModel> ListarRegistrosReporte()
+        {
+            var lista = new List<ProductoDbModel>();
+            using (InventarioBDEntities bd = new InventarioBDEntities())
+            {
+                //lista = bd.tb_marca.Where(x => x.nombre.ToUpper()
+                //       .Contains(filtro.ToUpper())).Skip(reDescartados).Take(numRegistroPagina).ToList();
+                var listaDatos = (from m in bd.tb_producto
+                                  select m).ToList();
+                lista = new MapeadorProductoDatos().MapearTipo1Tipo2(listaDatos).ToList();
+            }
+            return lista;
+        }
+
+
+
         public IEnumerable<ProductoDbModel> ListarRegistros(string filtro,
                                                     int paginaActual,
                                                     int numRegistroPagina, out int totalRegistro)
