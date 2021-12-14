@@ -28,7 +28,7 @@ namespace AccesoDeDatos.Implementacion.Asociar
                 //lista = bd.tb_marca.Where(x => x.nombre.ToUpper()
                 //       .Contains(filtro.ToUpper())).Skip(reDescartados).Take(numRegistroPagina).ToList();
                 var listaDatos = (from m in bd.tb_asociar
-                                  where m.ubicacion.Contains(filtro)
+                                  where m.tb_persona.nombre.Contains(filtro)
                                   select m).ToList();
                 totalRegistro = listaDatos.Count();
                 listaDatos = listaDatos.OrderBy(m => m.id).Skip(reDescartados).Take(numRegistroPagina).ToList();

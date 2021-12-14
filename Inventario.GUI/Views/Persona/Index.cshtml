@@ -9,8 +9,17 @@
 <p>
     @Html.ActionLink("Crear Persona", "Create", new { }, new { @class = "btn btn-success" })
 </p>
-<input type="text" name="txtFiltro" id="txtFiltro" />
-<button type="submit" class="btn btn-info "> Filtrar</button>
+<form method="get" action=@Url.Action("Index", "Persona" )>
+    <div class="form-group">
+        @Html.TextBox("filtro", null, new
+        {
+            placeholder = "Filtrar búsqueda",
+                                @class = "form-control"
+        })
+
+    </div>
+    <button class="btn btn-info" type="submit">Filtrar</button>
+</form>
 <table class="table">
     <tr>
         <th>Nº</th>
